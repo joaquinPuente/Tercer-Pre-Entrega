@@ -1,0 +1,20 @@
+<div>
+    <h1>Detalle de Producto</h1>
+    <div class="card-container">
+    <div class="card">
+      <h2>{{this.title}}</h2>
+      <img src="{{this.thumbnail}}" alt="{{this.title}}">
+      <p>{{this.description}}</p>
+      <p>Precio: ${{this.price}}</p>
+      <p>Código: {{this.code}}</p>
+      <p>Stock: {{this.stock}}</p>
+      <form action="/api/addToCart" method="post">
+        <input type="hidden" name="productId" value="{{this._id}}">
+        <label for="cid">Carrito ID</label>
+        <input type="number" id="cid" name="cid" required>
+        <button type="submit">Agregar al carrito</button>
+      </form>
+    </div>
+    </div>
+    <a href="http://localhost:8080/api/products">Volver🔙</a>
+</div>

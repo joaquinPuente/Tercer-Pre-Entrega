@@ -1,0 +1,28 @@
+<form action="/api/createProduct" method="POST">
+  <h1>CREAR PRODUCTO</h1>
+
+  <label for="title">Título:</label>
+  <input type="text" id="title" name="title" required>
+
+  <label for="description">Descripción:</label>
+  <input type="text" id="description" name="description" required>
+
+  <label for="price">Precio:</label>
+  <input type="number" id="price" name="price" required>
+
+  <label for="thumbnail">URL de la Imagen:</label>
+  <input type="text" id="thumbnail" name="thumbnail" required>
+
+  <label for="code">Código:</label>
+  <input type="text" id="code" name="code" required>
+
+  <label for="stock">Stock:</label>
+  <input type="number" id="stock" name="stock" required>
+
+  <button type="submit" class="my-button">Guardar Producto</button>
+  <br>
+  <button type="button" class="btn-warning my-button"><a href="/api/products" class="a">Volver</a></button>
+  
+</form>
+
+<script src="/js/index.js"></script>

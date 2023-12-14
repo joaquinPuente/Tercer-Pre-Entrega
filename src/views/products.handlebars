@@ -1,0 +1,88 @@
+<div>
+    <nav class="navbar">
+      <h1>Listado de Productos</h1>
+    <div class="nav-links">
+
+      <div id="permisos">
+
+      </div>
+
+      <a href="/api/cart">Carritos 🛒</a>
+      <a href="/api/session/current">Current🔍</a>
+      <a href="/api/chat">Chat sobre productos😎</a>
+      <a href="/logout">Logout🔒</a>
+    </div>
+    </nav>
+
+    <h1>Bienvenido {{user.first_name}} {{user.last_name}} ! 😎 </h1>
+    <p>role: {{user.role}}</p>
+    <div class="card-container">
+    {{#each payload}}
+    <div class="card">
+      <h2>{{this.title}}</h2>
+      <img src="{{this.thumbnail}}" alt="{{this.title}}">
+      <p>{{this.description}}</p>
+      <p>Precio: ${{this.price}}</p>
+      <p>Código: {{this.code}}</p>
+      <p>Stock: {{this.stock}}</p>
+      <br>
+      <a href="/api/products/{{this._id}}">Detalles🔍</a>
+      <br><br>
+      <form action="/api/addToCart" method="post">
+        <form action="/api/addToCart" method="post">
+          <input type="hidden" name="productId" value="{{this._id}}">
+          <button type="submit">Agregar al carrito</button>
+        </form>
+      </form>
+    </div>
+    {{/each}}
+</div>
+
+<div>
+    <form method="GET" action="/api/products">
+    <label for="sortField">Campo de clasificación:</label>
+    <select name="sortField" id="sortField">
+        <option value="defaultField">Por defecto</option>
+        <option value="price">Precio</option>
+        <option value="stock">Stock</option>
+    </select>
+
+    <label for="sortOrder">Orden de clasificación:</label>
+    <select name="sortOrder" id="sortOrder">
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+    </select>
+    <input type="submit" value="Aplicar clasificación">
+</div>
+
+
+<p>Total de paginas: {{totalPages}}</p>
+<p>Pagina Actual: {{page}}</p>
+
+{{#if prevPage}}
+  <p>Pagina Anterior: {{prevPage}}</p>
+{{/if}}
+
+{{#if nextPage}}
+  <p>Pagina Siguiente: {{nextPage}}</p>
+{{/if}}
+
+<a href="{{prevLink}}" role="button" class="pageButton"  {{#unless hasPrevPage}} disabled {{/unless}}>Anterior</a>
+<a href="{{nextLink}}" role="button" class="pageButton"  {{#unless hasNextPage}} disabled {{/unless}}>Siguiente</a>
+
+<script>
+  // Espera a que el documento esté completamente cargado antes de buscar el elemento
+  document.addEventListener('DOMContentLoaded', () => {
+    const permisos = document.getElementById('permisos');
+
+    // Realiza la verificación y cambia el contenido basado en el usuario
+    if ("{{user.role}}" === 'ADMIN') {
+      permisos.innerHTML = `
+        <a href="/api/createProduct">Crear Producto🙌</a>
+        <a href="/api/deleteProduct">Borrar Producto🗑️</a>
+        <a href="/api/updateProduct">Actualizar Producto✏️</a>`;
+    } else {
+      permisos.innerHTML = '';
+    }
+  });
+</script>

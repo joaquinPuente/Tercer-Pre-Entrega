@@ -1,0 +1,215 @@
+body{
+    background-color: whitesmoke;
+}
+/* Estilos para la vista products.handlebars */
+.card {
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    max-width: 300px; /* Hace que las cartas sean más pequeñas */
+    display: inline-block;
+    background-color: #fff; /* Cambia el color de fondo a tu preferencia */
+    border-radius: 5px; /* Añade bordes redondeados a las cartas */
+}
+  
+.card img {
+    width: 100%;
+    height: auto;
+}
+  
+.card h2 {
+    font-size: 18px; /* Reduce el tamaño del título */
+    margin: 5px 0;
+}
+  
+.card p {
+    font-size: 14px; /* Reduce el tamaño del texto */
+    margin: 5px 0;
+}
+  
+.card button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+  
+.card button:hover {
+    background-color: #0056b3;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input {
+    width: 93%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Estilos para la vista cart.handlebars */
+#cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#cart-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+#cart-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#cart-table tr:hover {
+    background-color: #ddd;
+}
+
+.remove-form {
+    display: inline;
+    border: none;
+    border-radius: none;
+}
+
+.remove-button {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.remove-button:hover {
+    background-color: #ff3333;
+}
+
+/* Estilos generales para botones */
+.my-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.my-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para botones de alerta */
+.btn-warning {
+    width: 100%;
+    padding: 10px;
+    background-color: grey;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: block;
+}
+
+.btn-warning:hover {
+    background-color: black;
+}
+
+/* Estilos para enlaces */
+.a {
+    text-decoration: none;
+    color: white;
+}
+
+/* Estilos para tablas */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+/* Estilos para NavBar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Añade espacio alrededor del contenido del navbar */
+    background-color: #333; /* Cambia el color de fondo a tu preferencia */
+    color: white; /* Cambia el color del texto a tu preferencia */
+}
+  
+.nav-links {
+    display: flex;
+    gap: 20px; /* Añade espacio entre los enlaces del navbar */
+}
+
+.nav-links div {
+    display: flex;
+    gap: 20px; /* Añade espacio entre los enlaces del navbar */
+}
+  
+.nav-links a {
+    text-decoration: none;
+    color: white; /* Cambia el color de los enlaces a tu preferencia */
+}
+
+
+.pageButton{
+    display: inline-block;
+    width: 60px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}

@@ -1,0 +1,12 @@
+<h1>Informacion del usuario</h1>
+<table>
+    <tbody>
+        {{#each user}}
+            <tr>
+                <td>{{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+<a href="http://localhost:8080/api/products">Volver🔙</a>
