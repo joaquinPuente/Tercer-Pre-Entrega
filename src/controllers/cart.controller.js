@@ -16,8 +16,6 @@ export default class CartController {
     try {
       const { productId } = req.body;
       const userId = req.session.user._id;
-      console.log('userid desde controller', userId);
-      console.log('productid desde controller', productId);
       await CartService.removeFromCart(userId, productId);
       res.redirect('/api/cart');
     } catch (error) {
