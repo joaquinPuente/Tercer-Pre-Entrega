@@ -1,4 +1,5 @@
 import ProductService from '../service/product.service.js';
+import ProductDTO from '../dto/product.dto.js';
 
 export default class ProductController {
   static async getAllProducts(req, res) {
@@ -42,10 +43,19 @@ export default class ProductController {
     }
   }
 
+  static async getCreateProduct(req, res) {
+    try {
+      res.render('createProduct');
+    } catch (error) {
+      console.error('Error al obtener la página de creación de productos:', error);
+      res.status(500).send('Error al cargar la página de creación de productos');
+    }
+  }
+
   static async createProduct(req, res) {
     try {
       const { title, description, price, thumbnail, code, stock } = req.body;
-      const productData = { title, description, price, thumbnail, code, stock };
+      const productData = new ProductDTO(title, description, price, thumbnail, code, stock); // Utiliza el DTO para estructurar los datos del producto
       const newProduct = await ProductService.createProduct(productData);
 
       if (!newProduct) {
@@ -59,6 +69,15 @@ export default class ProductController {
     } catch (error) {
       console.error('Error al crear el producto:', error.message);
       res.status(500).json({ success: false, message: 'Error al crear producto', error: error.message });
+    }
+  }
+  
+  static async getDeleteProduct(req, res) {
+    try {
+      res.render('deleteProduct');
+    } catch (error) {
+      console.error('Error al obtener la página de  borrar productos: ', error);
+      res.status(500).send('Error al cargar la página de borrar productos');
     }
   }
 
@@ -78,6 +97,15 @@ export default class ProductController {
     } catch (error) {
       console.error('No se pudo borrar el producto:', error);
       res.status(500).send('Error al borrar producto');
+    }
+  }
+
+  static async getUpdateProduct(req, res) {
+    try {
+      res.render('updateProduct');
+    } catch (error) {
+      console.error('Error al obtener la página de actualizacion de productos: ', error);
+      res.status(500).send('Error al cargar la página de actualizacion de productos');
     }
   }
 

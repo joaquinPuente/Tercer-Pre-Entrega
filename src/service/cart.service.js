@@ -1,9 +1,9 @@
-import CartDAO from "../dao/cart.dao.js";
+import { CartDao } from "../dao/factory.js";
 
 export default class CartService {
 
   static async getCartDetails(userId) {
-    const userCart = await CartDAO.getUserCart(userId);
+    const userCart = await CartDao.getUserCart(userId);
     if (!userCart) {
       throw new Error("Carrito no encontrado");
     }
@@ -17,7 +17,7 @@ export default class CartService {
   }
 
   static async removeFromCart(userId, productId) {
-    const userCart = await CartDAO.getUserCart(userId);
+    const userCart = await CartDao.getUserCart(userId);
     if (!userCart) {
       throw new Error('Carrito no encontrado');
     }
@@ -31,9 +31,9 @@ export default class CartService {
   }
 
   static async addToCart(userId, productId) {
-    let userCart = await CartDAO.getUserCart(userId);
+    let userCart = await CartDao.getUserCart(userId);
     if (!userCart) {
-      userCart = new CartDAO({ user: userId, items: [] });
+      userCart = new CartDao({ user: userId, items: [] });
     }
     const existingProductIndex = userCart.items.findIndex(item => item.product.equals(productId));
     if (existingProductIndex !== -1) {

@@ -6,5 +6,6 @@ export default {
     port: process.env.PORT,
     mongoUri: process.env.MONGODB_URI,
     sessionSecret: process.env.SESSION_SECRET,
-    clientSecret: process.env.CLIENT_SECRET
+    clientSecret: process.env.CLIENT_SECRET,
+    persistence: process.env.PERSISTENCE
 };

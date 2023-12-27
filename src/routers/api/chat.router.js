@@ -3,9 +3,17 @@ import Message from '../../models/chat.model.js';
 
 const router = express.Router();
 
-router.get('/chat', async (req, res) => {
+const userRoleAuth = (req, res, next) => {
+    const { role } = req.session.user;
+    if (role === 'usuario') {
+      next();
+    } else {
+      res.status(403).json({ message: 'Acceso no autorizado. Se requiere rol de usuario' });
+    }
+  };
+
+router.get('/chat', userRoleAuth, async (req, res) => {
     const messages = await Message.find().exec();
-    console.log('Mensajes:', messages)
     res.render('chat', { messages: messages.map(p =>p.toJSON())});
 });
 

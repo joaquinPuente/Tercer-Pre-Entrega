@@ -1,16 +1,31 @@
 import config from "../config.js";
 
-export let ProductDao;
+let ProductDao;
+let UserDao;
+let CartDao;
+
+console.log('FACTORY_PERSISTANCE:', config.persistence);
 
 switch (config.persistence) {
-    
   case 'mongodb':
-    ProductDao = (await import('./product.mongodb.dao.js')).default;
-    console.log('product mongodb');
+    const MongoDBProductDao = await import('./product.mongodb.dao.js');
+    const MongoDBUserDao = await import('./user.mongodb.dao.js');
+    const MongoDBCartDao = await import('./cart.mongodb.dao.js');
+
+    ProductDao = MongoDBProductDao.default;
+    UserDao = MongoDBUserDao.default;
+    CartDao = MongoDBCartDao.default;
     break;
 
   default:
-    ProductDao = (await import('./product.memory.dao.js')).default;
-    console.log('product memory');
+    const MemoryProductDao = await import('./product.memory.dao.js');
+    const MemoryUserDao = await import('./user.memory.dao.js');
+    const MemoryCartDao = await import('./cart.memory.dao.js');
+
+    ProductDao = MemoryProductDao.default;
+    UserDao = MemoryUserDao.default;
+    CartDao = MemoryCartDao.default;
     break;
 }
+
+export { ProductDao, UserDao, CartDao };

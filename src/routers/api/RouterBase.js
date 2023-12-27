@@ -51,16 +51,31 @@ export default class RouterBase {
   
 
   handlePolicies = (policies) => (req, res, next) => {
-    if (policies[0] === 'PUBLIC') {
-        return next();
-    } 
-    const {role} = req.session.user;
-    if (role === 'ADMIN'){
-        return next();
-    } else {
-        return res.status(401).json({ message: 'unauthorized 🖐️' });
-    }
-  }
+    const { role } = req.session.user;
 
-  
+    if (policies[0] === 'PUBLIC' && req.path !== '/addToCart') {
+        return next();
+    }
+
+    if (role === 'usuario' && req.path === '/addToCart' && req.method === 'POST') {
+        return next();
+    }
+
+    if (role === 'ADMIN' && (
+        req.path.startsWith('/createProduct') ||
+        req.path.startsWith('/deleteProduct') ||
+        req.path.startsWith('/updateProduct')
+    )) {
+        return next(); // Permitir solo rutas de creación, eliminación o actualización
+    } else if (role === 'ADMIN') {
+        if (req.path !== '/addToCart') {
+            return next();
+        } else {
+            return res.status(401).json({ message: 'Unauthorized ️' });
+        }
+    } else {
+        return res.status(401).json({ message: 'Unauthorized ️' });
+    }
+};
+    
 }
