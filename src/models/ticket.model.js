@@ -32,7 +32,16 @@ const ticketSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  cart: { type: mongoose.Schema.Types.ObjectId, ref: 'carts' }
+
+  productsAdded: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'products'
+  }],
+  productsNotAdded: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'products' 
+  }]
+
 }, { timestamps: true });
 
 export default mongoose.model('Ticket', ticketSchema);

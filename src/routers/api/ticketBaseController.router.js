@@ -9,7 +9,6 @@ export default class CartBaseController extends RouterBase {
 
   init() {
     this.get('/ticket',['PUBLIC', 'usuario'], TicketController.getTicketsByPurchaser);
-    //this.post('/:uid/ticket',['PUBLIC'], TicketController.purchaser );
   }
 
   getRouter() {

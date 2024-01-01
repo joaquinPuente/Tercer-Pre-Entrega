@@ -5,7 +5,7 @@ import user from './user.model.js'
 const cartItemSchema = new Schema({
     product: { type: Schema.Types.ObjectId, ref: 'products' },
     quantity: { type: Number, default: 1 }
-});
+},{_id:false});
 
 const cartSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'users' },

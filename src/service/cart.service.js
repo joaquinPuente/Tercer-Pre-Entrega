@@ -43,4 +43,14 @@ export default class CartService {
     }
     await userCart.save();
   }
+
+  static async clearCart(userId) {
+    const userCart = await CartDao.getUserCart(userId);
+    if (!userCart) {
+      throw new Error('Carrito no encontrado');
+    }
+    userCart.items = [];
+    await userCart.save();
+  }
+
 }
