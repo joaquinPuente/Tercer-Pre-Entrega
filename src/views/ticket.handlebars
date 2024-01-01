@@ -1,9 +1,17 @@
-<h1>Ticket Details</h1>
-<p>
-    <strong>Ticket ID:</strong> {{ticket._id}} <br>
-    <strong>Amount:</strong> ${{ticket.amount}} <br>
-    <strong>Purchase Date:</strong> {{ticket.purchase_datetime}} <br>
-    <strong>Purchaser:</strong> {{ticket.purchaser}} <br>
-</p>
-<a href="/:cid/purchase">Finalizar compra</a>
-<a href="/api/cart">Volver</a>
+<h1>Detalles de Tickets</h1>
+    {{#if tickets}}
+        {{#each tickets}}
+            <div>
+                <p>_id: {{this._id}}</p>
+                <p>Código del ticket: {{this.code}}</p>
+                <p>Fecha de compra: {{this.purchase_datetime}}</p>
+                <p>Monto: {{this.amount}}</p>
+                <p>Comprador: {{this.purchaser}}</p>
+                <hr>
+            </div>
+        {{/each}}
+        <a href="/:cid/purchase">Finalizar compra</a>
+        <a href="/api/cart">Volver</a>
+    {{else}}
+        <p>No se encontraron tickets</p>
+{{/if}}

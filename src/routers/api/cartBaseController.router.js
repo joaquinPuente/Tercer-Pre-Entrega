@@ -11,8 +11,7 @@ export default class CartBaseController extends RouterBase {
     this.get('/cart', ['PUBLIC'], CartController.getCartDetails);
     this.post('/removeFromCart', ['PUBLIC'], CartController.removeFromCart);
     this.post('/addToCart', [], CartController.addToCart);
-    this.get('/ticket',['PUBLIC'], CartController.getTicket);
-    this.post('/:uid/ticket',['PUBLIC'], CartController.purchase);
+    this.get('/generateTicket',['PUBLIC'], CartController.generateTicket);
   }
 
   getRouter() {

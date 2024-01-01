@@ -1,4 +1,4 @@
-import TicketModel from "../models/ticket.model.js";
+import TicketModel from '../models/ticket.model.js'
 
 export default class TicketService {
     static findAll(filter={}){
@@ -21,4 +21,7 @@ export default class TicketService {
         return TicketModel.deleteById(uid)
     }
 
+    static findByPurchaserEmail(email) {
+        return TicketModel.find({ purchaser: email });
+    }
 }
