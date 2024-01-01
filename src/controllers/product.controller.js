@@ -30,6 +30,7 @@ export default class ProductController {
       }
 
       res.render('product', {
+        _id: product._id,
         title: product.title,
         thumbnail: product.thumbnail,
         description: product.description,

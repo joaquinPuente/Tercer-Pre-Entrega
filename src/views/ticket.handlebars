@@ -1,17 +1,30 @@
 <h1>Detalles de Tickets</h1>
-    {{#if tickets}}
-        {{#each tickets}}
-            <div>
-                <p>_id: {{this._id}}</p>
-                <p>Código del ticket: {{this.code}}</p>
-                <p>Fecha de compra: {{this.purchase_datetime}}</p>
-                <p>Monto: {{this.amount}}</p>
-                <p>Comprador: {{this.purchaser}}</p>
-                <hr>
-            </div>
+{{#if tickets}}
+  {{#each tickets}}
+    <div>
+      <p>_id: {{this._id}}</p>
+      <p>Código del ticket: {{this.code}}</p>
+      <p>Fecha de compra: {{this.purchase_datetime}}</p>
+      <p>Monto: {{this.amount}}</p>
+      <p>Comprador: {{this.purchaser}}</p>
+      <p>Productos Agregados:</p>
+      <ul>
+        {{#each productsAdded}}
+          <li>{{this.title}} - {{this.description}} - Precio: {{this.price}}</li>
         {{/each}}
-        <a href="/:cid/purchase">Finalizar compra</a>
-        <a href="/api/cart">Volver</a>
-    {{else}}
-        <p>No se encontraron tickets</p>
+      </ul>
+      <p>Productos No Agregados por falta de Stock:</p>
+      <ul>
+        {{#each productsNotAdded}}
+          <li>{{this.title}} - {{this.description}} - Precio: {{this.price}}</li>
+        {{/each}}
+      </ul>
+      <hr>
+    </div>
+  {{/each}}
+  <a href="/sendTicketToMail">Enviar comprobante de pago al mail</a>
+  <br>
+  <a href="/api/products">Volver a productos!</a>
+{{else}}
+  <p>No se encontraron tickets</p>
 {{/if}}

@@ -5,7 +5,7 @@ export default class TicketController {
     static async getTicketsByPurchaser(req, res) {
         try {
             const email = req.session.user.email;
-            const tickets = await TicketService.findByPurchaserEmail(email); 
+            const tickets = await TicketService.findByPurchaserEmail(email).populate('productsAdded productsNotAdded'); 
             console.log('tickets desde controller: ', tickets);
             const ticketsJSON = tickets.map(ticket => {
                 if (ticket.toJSON && typeof ticket.toJSON === 'function') {
