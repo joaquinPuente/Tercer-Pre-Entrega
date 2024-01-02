@@ -4,7 +4,7 @@ import ProductDTO from '../dto/product.dto.js';
 export default class ProductController {
   static async getAllProducts(req, res) {
     try {
-      const { page = 1, limit = 5, sortField = 'defaultField', sortOrder = 'asc' } = req.query;
+      const { page = 1, limit = 10, sortField = 'defaultField', sortOrder = 'asc' } = req.query;
       const opts = { page, limit, sort: { [sortField]: sortOrder } };
       const criteria = {};
 
