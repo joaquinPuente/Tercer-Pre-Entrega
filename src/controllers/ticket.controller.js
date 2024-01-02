@@ -42,7 +42,10 @@ export default class TicketController {
                     emailContent,
                     []
                 );
-                 res.status(200).render('compraFinalizada')
+
+                await ticketModel.deleteOne({ purchaser : email })
+
+                res.status(200).render('compraFinalizada')
             } else {
                 res.status(404).json({ error: 'No se encontraron tickets para este usuario' });
             }
@@ -50,25 +53,5 @@ export default class TicketController {
             next(error);
         }
     }
-
-
-    static async deleteTicket(req, res, next) {
-        try{
-            const email = req.session.user.email;
-            const ticket = await TicketService.findByPurchaserEmail(email)
-            if (!ticket) {
-                return res.status(404).json({ error: 'Ticket no encontrado' });
-            }
-            if (ticket.purchaser !== email) {
-                return res.status(403).json({ error: 'No tienes permiso para eliminar este ticket' });
-            }
-            await ticketModel.deleteOne({ purchaser : email })
-            res.status(200).json({ message: 'Ticket eliminado exitosamente' });
-        } catch (error) {
-            next(error);
-        }
-    }
-
-
 
 }
