@@ -19,6 +19,7 @@ import { __dirname } from './utils.js';
 import handlebars from 'express-handlebars';
 import config from "./config.js";
 import { init as initPassportConfig } from './config/passport.config.js';
+import errorHandler from "./middlewares/ErrorHandler.js";
 
 
 const app = express();
@@ -57,11 +58,7 @@ app.use(passport.session())
 app.use('/', homeRouter, indexRouter, sessionRouter, mockingProduct );
 app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter(), ticketBaseController.getRouter() ,chatRouter);
 
-app.use((error, req, res, next) => {
-  const message = `Ah ocurrido un error desconocido 😨: ${error.message}`;
-  console.log(message);
-  res.status(500).json({ status: 'error', message });
-});
+app.use(errorHandler);
 
 
 export default app;
