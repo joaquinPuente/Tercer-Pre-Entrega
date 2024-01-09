@@ -1,7 +1,7 @@
 import ProductService from '../service/product.service.js';
 import ProductDTO from '../dto/product.dto.js';
 import { CustomError } from '../service/errors/CustomError.js';
-import { generatorProductError } from '../service/errors/CauseMessage.js';
+import { generatorProductError, generatorProductIdError } from '../service/errors/CauseMessage.js';
 import EnumsError from '../service/errors/EnumsError.js';
 
 export default class ProductController {
@@ -59,28 +59,21 @@ export default class ProductController {
   static async createProduct(req, res) {
     try {
       const { title, description, price, thumbnail, code, stock } = req.body;
-      const productData = new ProductDTO(title, description, price, thumbnail, code, stock); // Utiliza el DTO para estructurar los datos del producto
-      const newProduct = await ProductService.createProduct(productData);
-
-      if (!newProduct) {
-        CustomError.createError({
+      if( !title || !description || !price || !thumbnail || !code || !stock){
+        throw CustomError.createError({
           name:'Error al crear un producto',
-          cause: generatorProductError(newProduct),
+          cause: generatorProductError(req.body),
           message:'Error al crear un producto',
           code: EnumsError.BAD_REQUEST_ERROR,
-        })
-        return;
+        });
       }
-
+      const productData = new ProductDTO(title, description, price, thumbnail, code, stock); // Utiliza el DTO para estructurar los datos del producto
+      const newProduct = await ProductService.createProduct(productData);
       console.log('Producto creado:', newProduct);
       res.redirect('/api/products');
     } catch (error) {
-      CustomError.createError({
-        name:'Error al crear un producto',
-        cause: generatorProductError(req.body),
-        message:'Error al crear un producto',
-        code: EnumsError.BAD_REQUEST_ERROR,
-      })
+      console.error('Error al crear productos productos: ', error);
+      res.status(500).send('Error al crear productos productos');
     }
   }
   
@@ -96,6 +89,15 @@ export default class ProductController {
   static async deleteProductById(req, res) {
     try {
       const { _id } = req.body;
+      if (!_id) {
+        CustomError.createError({
+          name: 'Error validando el id del producto',
+          cause: generatorProductIdError(_id),
+          message: 'Ocurrio un error mientras obteniamos el producto por id.',
+          code: EnumsError.BAD_REQUEST_ERROR,
+        });
+      }
+
       const deletedProduct = await ProductService.deleteProductById(_id);
 
       if (!deletedProduct) {

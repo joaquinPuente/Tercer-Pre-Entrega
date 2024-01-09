@@ -2,8 +2,9 @@ import EnumsError from "../service/errors/EnumsError.js"
 
 export default (error, req, res, next) =>{
     console.error('error  code',error.code);
-    console.error('error cause', error.cause);
+
     switch (error.code) {
+
     case EnumsError.BAD_REQUEST_ERROR:
         res.status(400).json({ status: 'error', message: error.message})
     break;
@@ -19,5 +20,6 @@ export default (error, req, res, next) =>{
     default:
         res.status(500).json({status:'error', message: 'error desconocido desde el midleware'})
     break;
-   }
+   
+    }
 }

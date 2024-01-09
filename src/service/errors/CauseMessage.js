@@ -40,3 +40,10 @@ export const generatorProductError = (product) => {
     return errorMessage;
 };
 
+export const generatorProductIdError = (id) => {
+    if (typeof id !== 'string') {
+        return `Se debe enviar un identificador válido 😱. El valor recibido no es un string: ${id}`;
+    }
+    return `Se debe enviar un identificador válido 😱. Valor recibido: ${id}`;
+};
+
