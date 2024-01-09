@@ -5,6 +5,7 @@ import homeRouter from './routers/api/home.router.js';
 import chatRouter from './routers/api/chat.router.js';
 import indexRouter from './routers/api/index.router.js';
 import sessionRouter from './routers/api/sessions.router.js'
+import mockingProduct from './routers/api/mockingProduct.router.js'
 
 import ProductBaseController from "./routers/api/productBaseController.router.js";
 import CartBaseController from "./routers/api/cartBaseController.router.js";
@@ -53,7 +54,7 @@ initPassportConfig()
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/', homeRouter, indexRouter, sessionRouter);
+app.use('/', homeRouter, indexRouter, sessionRouter, mockingProduct );
 app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter(), ticketBaseController.getRouter() ,chatRouter);
 
 app.use((error, req, res, next) => {
