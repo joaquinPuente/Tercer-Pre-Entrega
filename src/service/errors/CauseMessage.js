@@ -1,10 +1,9 @@
-export const generatorUserError = ( user ) => {
+export const generatorRegisterError = ( user ) => {
     return `Todos los campos son requeridos y deben ser validos. Lista de campos recibidos en la solicitud:
     - first_name: ${user.first_name}
     - last_name: ${user.last_name}
     - email: ${user.email}
-    - phone: ${user.phone}
-    - age: ${user.age}
+    - number: ${user.number}
     - password: ${user.password}
     `;
 };

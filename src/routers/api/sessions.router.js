@@ -8,6 +8,7 @@ import UserDTO from "../../dto/user.dto.js";
 const router = Router();
 
 router.post('/sessions', passport.authenticate('register', { failureRedirect: '/register' }) ,async (req,res)=>{
+    console.log('pasas por /session');
     res.redirect('/login')
 })
 

@@ -1,4 +1,4 @@
-import UserDao from '../dao/user.dao.js'; // Asegúrate de importar el DAO de usuario correctamente
+import UserDao from "../models/user.model.js";
 
 export default class UserManager {
   static async getAllUsers(criteria, options) {

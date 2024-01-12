@@ -1,5 +1,4 @@
-//import UserService from '../services/user.service.js';
-//import { createHash, isValidPassword } from '../utils.js';
+
 
 export default class UserController {
 
@@ -51,7 +50,6 @@ export default class UserController {
 
   static async getCurrentSession(req, res) {
     try {
-      // Logica para obtener información de la sesión actual del usuario
       if (!req.session.user) {
         return res.status(401).json({ error: 'No hay sesión activa' });
       }

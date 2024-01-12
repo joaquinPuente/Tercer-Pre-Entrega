@@ -18,7 +18,7 @@ export default (error, req, res, next) =>{
     break;
    
     default:
-        res.status(500).json({status:'error', message: 'error desconocido desde el midleware'})
+        res.status(500).json({status:'error', message: error.message})
     break;
    
     }
