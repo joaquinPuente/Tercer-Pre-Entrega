@@ -8,7 +8,7 @@ import UserDTO from "../../dto/user.dto.js";
 const router = Router();
 
 router.post('/sessions', passport.authenticate('register', { failureRedirect: '/register' }) ,async (req,res)=>{
-    console.log('pasas por /session');
+    req.logger.info('Inicio de sesion correctamente')
     res.redirect('/login')
 })
 
@@ -22,10 +22,10 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/login'
             await newCart.save();
             console.log('¡Se ha creado un nuevo carrito para el usuario!');
         }
-
+        req.logger.info('Inicio de sesion correctamente')
         res.redirect('/api/products');
     } catch (error) {
-        console.error('Error al iniciar sesión:', error);
+        req.logger.warning('Error al iniciar sesión:', error);
         res.status(500).send('Error al iniciar sesión');
     }
 });
@@ -34,7 +34,7 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/login'
 router.get('/session/github', passport.authenticate('github', {scope: ['user.email']}  ))
 
 router.get('/api/session/github-callback', passport.authenticate('github',{failureRedirect:'/login'}), (req,res)=>{
-    console.log('req.user', req.user);
+    req.logger.info('req.user ingresado: ', req.user);
     req.session.user = req.user;
     res.redirect('/api/products')
 })
@@ -73,10 +73,10 @@ router.get('/api/session/current', requireAuth, async (req, res) => {
         return res.status(404).json({ error: 'Usuario no encontrado' });
       }
       const userData = new UserDTO(user.toObject());  
-      console.log(userData);
+      req.logger.info('Inicio de sesion correctamente')
       res.status(200).render('current', { user: userData });
     } catch (error) {
-      console.error('Error al obtener información de sesión:', error);
+      req.logger.fatal('Error al obtener información de sesión:', error);
       res.status(500).json({ error: 'Error al obtener información de sesión' });
     }
   });

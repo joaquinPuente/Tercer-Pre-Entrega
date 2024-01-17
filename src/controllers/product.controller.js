@@ -15,9 +15,10 @@ export default class ProductController {
       const response = buildResponse(result, sortField, sortOrder);
       response.user = req.session.user;
 
+      req.logger.info('Obtenidos todos los productos exitosamente');
       res.render('products', response);
     } catch (error) {
-      console.error('Error al obtener productos:', error);
+      req.logger.error('Error al obtener productos:', error);
       res.status(500).send('Error al obtener productos');
     }
   }
@@ -32,6 +33,7 @@ export default class ProductController {
         return;
       }
 
+      req.logger.info('Obtenido producto por ID exitosamente');
       res.render('product', {
         _id: product._id,
         title: product.title,
@@ -42,16 +44,17 @@ export default class ProductController {
         stock: product.stock
       });
     } catch (error) {
-      console.error('Error al obtener producto por ID:', error);
+      req.logger.error('Error al obtener producto por ID:', error);
       res.status(500).send('Error al obtener producto por ID');
     }
   }
 
   static async getCreateProduct(req, res) {
     try {
+      req.logger.info('Obtenida página de creación de productos exitosamente');
       res.render('createProduct');
     } catch (error) {
-      console.error('Error al obtener la página de creación de productos:', error);
+      req.logger.error('Error al obtener la página de creación de productos:', error);
       res.status(500).send('Error al cargar la página de creación de productos');
     }
   }
@@ -69,19 +72,20 @@ export default class ProductController {
       }
       const productData = new ProductDTO(title, description, price, thumbnail, code, stock); // Utiliza el DTO para estructurar los datos del producto
       const newProduct = await ProductService.createProduct(productData);
-      console.log('Producto creado:', newProduct);
+      req.logger.info('Producto creado exitosamente:', newProduct);
       res.redirect('/api/products');
     } catch (error) {
-      console.error('Error al crear productos productos: ', error);
+      req.logger.error('Error al crear productos productos: ', error);
       res.status(500).send('Error al crear productos productos');
     }
   }
   
   static async getDeleteProduct(req, res) {
     try {
+      req.logger.info('Obtenida página de borrar productos exitosamente')
       res.render('deleteProduct');
     } catch (error) {
-      console.error('Error al obtener la página de  borrar productos: ', error);
+      req.logger.error('Error al obtener la página de  borrar productos: ', error);
       res.status(500).send('Error al cargar la página de borrar productos');
     }
   }
@@ -101,15 +105,15 @@ export default class ProductController {
       const deletedProduct = await ProductService.deleteProductById(_id);
 
       if (!deletedProduct) {
-        console.error('Producto no encontrado o no se pudo eliminar');
+        req.logger.error('Producto no encontrado o no se pudo eliminar');
         res.status(404).send('Producto no encontrado o no se pudo eliminar');
         return;
       }
 
-      console.log('Producto Eliminado', _id);
+      req.logger.info('Producto Eliminado', _id);
       res.status(204).redirect('/api/products');
     } catch (error) {
-      console.error('No se pudo borrar el producto:', error);
+      req.logger.error('No se pudo borrar el producto:', error);
       res.status(500).send('Error al borrar producto');
     }
   }
@@ -135,7 +139,7 @@ export default class ProductController {
         return;
       }
 
-      console.log('Producto Actualizado', updatedProduct);
+      req.logger.info('Producto Actualizado', updatedProduct);
       res.status(204).redirect('/api/products');
     } catch (error) {
       console.error('No se pudo actualizar el producto:', error);

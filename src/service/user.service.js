@@ -1,25 +1,25 @@
-import TicketDAO from "../dao/ticket.mongodb.js";
+import userDAO from "../dao/ticket.mongodb.js";
 
 
 export default class TicketService {
     static findAll(filter={}){
-        return TicketDAO.get(filter)
+        return userDAO.get(filter)
     }
 
     static async create(data){
-        return await TicketDAO.create(data)
+        return await userDAO.create(data)
     }
 
     static findById(tid){
-        return TicketDAO.getById(tid)
+        return userDAO.getById(tid)
     }
 
     static updateById(tid,data){
-        return TicketDAO.updateById(tid,data);
+        return userDAO.updateById(tid,data);
     }
 
     static deleteById(tid){
-        return TicketDAO.deleteById(tid)
+        return userDAO.deleteById(tid)
     }
 
 }

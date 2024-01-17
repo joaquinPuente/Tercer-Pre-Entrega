@@ -1,0 +1,8 @@
+{"level":"fatal","message":"Esta es una prueba log fatal"}
+{"level":"error","message":"Esta es una prueba log error"}
+{"level":"warning","message":"Esta es una prueba log warn"}
+{"level":"info","message":"Esta es una prueba log info"}
+{"level":"fatal","message":"Esta es una prueba log fatal"}
+{"level":"error","message":"Esta es una prueba log error"}
+{"level":"warning","message":"Esta es una prueba log warn"}
+{"level":"info","message":"Esta es una prueba log info"}

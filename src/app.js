@@ -20,6 +20,7 @@ import handlebars from 'express-handlebars';
 import config from "./config.js";
 import { init as initPassportConfig } from './config/passport.config.js';
 import errorHandler from "./middlewares/ErrorHandler.js";
+import { addLogger } from "./config/logger.js";
 
 
 const app = express();
@@ -42,7 +43,7 @@ app.use(ExpressSession({
   })
 )
 
-
+app.use(addLogger)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
