@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import config from '../config.js';
-
+import jwt from 'jsonwebtoken';
 
 class EmailService {
   constructor() {
@@ -21,6 +21,19 @@ class EmailService {
       html,
       attachments,
     });
+  }
+
+  sendPasswordResetEmail(to, token) {
+    // Crear el enlace de reset con el token
+    const TOKEN = `${token}`;
+
+    // Construir el contenido del correo
+    const html = `
+      <p>Para restablecer tu contraseña, ingrese en su formulario el codigo token: ${TOKEN} </p>
+    `;
+
+    // Enviar el correo
+    return this.sendEmail(to, 'Restablecer contraseña', html);
   }
 }
 

@@ -4,6 +4,8 @@ import { createHash, isValidPassword } from "../../utils.js";
 import userModel from "../../models/user.model.js";
 import cartModel from '../../models/cart.model.js'
 import UserDTO from "../../dto/user.dto.js";
+import emailService from '../../service/mails.service.js'
+import jwt from 'jsonwebtoken';
 
 const router = Router();
 
@@ -80,5 +82,72 @@ router.get('/api/session/current', requireAuth, async (req, res) => {
       res.status(500).json({ error: 'Error al obtener información de sesión' });
     }
   });
+
+router.get('/forgot-password', async (req,res)=>{
+    try {
+        res.render('recoveryPassword')
+    } catch (error) {
+        req.logger.fatal('Error al obtener pagina recoveryPassword.handlebars', error);
+    }
+})
+
+router.post('/forgot-password', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        // Generar el token JWT con una expiración de 1 hora
+        const token = jwt.sign({ email }, 'tu-secreto', { expiresIn: '1h' });
+
+        // Enviar el token por correo electrónico
+        await emailService.sendPasswordResetEmail(email, token);
+
+        res.status(200).redirect('/reset-password')
+    } catch (error) {
+        res.status(500).json({ message: 'Error al enviar el correo de restablecimiento de contraseña' });
+    }
+});
+
+router.get('/reset-password', (req, res) => {
+    try {
+        res.render('resetPassword')
+        //res.render('resetPassword', { errorMessage: req.session.errorMessage, successMessage: req.session.successMessage, csrfToken: req.csrfToken() });
+        //delete req.session.errorMessage;
+        //delete req.session.successMessage;    
+    } catch (error) {
+        req.logger.fatal('Error al obtener pagina resetPassword.handlebars', error);
+    }
+
+});
+
+
+router.post('/reset-password', async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+        // Verificar el token
+        const decoded = jwt.verify(token, 'tu-secreto');
+
+        // Obtener el usuario por el correo electrónico del token
+        const user = await userModel.findOne({ email: decoded.email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Hashear el nuevo password
+        const hashedPassword = createHash(newPassword);
+
+        // Actualizar el password en la base de datos
+        await userModel.updateOne({ email: decoded.email }, { $set: { password: hashedPassword } });
+
+        // Limpiar el token en la sesión después del restablecimiento exitoso
+        delete req.session.resetToken;
+        delete req.session.resetTokenExpires;
+
+        res.status(200).redirect('/login');
+    } catch (error) {
+        res.status(400).json({ message: 'Token no válido o expirado' });
+    }
+});
 
 export default router
