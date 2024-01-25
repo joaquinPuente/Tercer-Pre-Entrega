@@ -11,14 +11,14 @@ export default class ProductBaseController extends RouterBase {
     this.get('/products', ['PUBLIC'], ProductController.getAllProducts);
     this.get('/products/:pid', ['PUBLIC'], ProductController.getProductById);
 
-    this.get('/createProduct', ['ADMIN'], ProductController.getCreateProduct);
-    this.post('/createProduct', ['ADMIN'], ProductController.createProduct);
+    this.get('/createProduct', ['ADMIN','premium'], ProductController.getCreateProduct);
+    this.post('/createProduct', ['ADMIN','premium'], ProductController.createProduct);
 
-    this.get('/deleteProduct', ['ADMIN'], ProductController.getDeleteProduct);
-    this.post('/deleteProduct', ['ADMIN'], ProductController.deleteProductById);
+    this.get('/deleteProduct', ['ADMIN','premium'], ProductController.getDeleteProduct);
+    this.post('/deleteProduct', ['ADMIN','premium'], ProductController.deleteProductById);
 
-    this.get('/updateProduct', ['ADMIN'], ProductController.getUpdateProduct);
-    this.post('/updateProduct', ['ADMIN'], ProductController.updateProductById);
+    this.get('/updateProduct', ['ADMIN','premium'], ProductController.getUpdateProduct);
+    this.post('/updateProduct', ['ADMIN','premium'], ProductController.updateProductById);
   }
 
   getRouter() {

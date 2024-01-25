@@ -22,19 +22,20 @@ class EmailService {
       attachments,
     });
   }
-
+  
   sendPasswordResetEmail(to, token) {
-    // Crear el enlace de reset con el token
-    const TOKEN = `${token}`;
+    // Construir la URL con el token como parámetro
+    const resetUrl = `http://localhost:8080/reset-password?token=${token}`;
 
     // Construir el contenido del correo
     const html = `
-      <p>Para restablecer tu contraseña, ingrese en su formulario el codigo token: ${TOKEN} </p>
+        <p>Para restablecer tu contraseña, haz clic en el siguiente enlace: <a href="${resetUrl}">${resetUrl}</a></p>
     `;
 
     // Enviar el correo
     return this.sendEmail(to, 'Restablecer contraseña', html);
   }
+
 }
 
 export default new EmailService();

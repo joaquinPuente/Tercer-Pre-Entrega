@@ -76,7 +76,9 @@
     const permisos = document.getElementById('permisos');
 
     // Realiza la verificación y cambia el contenido basado en el usuario
-    if ("{{user.role}}" === 'ADMIN') {
+    const userRole = "{{user.role}}";
+  
+    if (userRole === 'ADMIN' || userRole === 'premium') {
       permisos.innerHTML = `
         <a href="/api/createProduct">Crear Producto🙌</a>
         <a href="/api/deleteProduct">Borrar Producto🗑️</a>

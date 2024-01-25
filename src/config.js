@@ -10,5 +10,6 @@ export default {
     clientSecret: process.env.CLIENT_SECRET,
     persistence: process.env.PERSISTENCE,
     google_user: process.env.GOOGLE_USER,
-    google_pass: process.env.GOOGLE_PASSWORD
+    google_pass: process.env.GOOGLE_PASSWORD,
+    jwt_token: process.env.JWT_TOKEN
 };

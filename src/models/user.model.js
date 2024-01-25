@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
     password: String,
     user: String,
     provider: String,
-    role: { type: String, default: 'usuario' }, 
+    role: { type: String, default: 'usuario', enum:['usuario','ADMIN', 'premium'] }, 
     cart: { type: mongoose.Schema.Types.ObjectId, ref: 'carts' } 
 }, { timestamps: true });
 

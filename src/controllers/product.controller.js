@@ -62,6 +62,7 @@ export default class ProductController {
   static async createProduct(req, res) {
     try {
       const { title, description, price, thumbnail, code, stock } = req.body;
+      const currentUser = req.user;
       if( !title || !description || !price || !thumbnail || !code || !stock){
         throw CustomError.createError({
           name:'Error al crear un producto',
@@ -70,7 +71,18 @@ export default class ProductController {
           code: EnumsError.BAD_REQUEST_ERROR,
         });
       }
-      const productData = new ProductDTO(title, description, price, thumbnail, code, stock); // Utiliza el DTO para estructurar los datos del producto
+      const productData = new ProductDTO(
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock,
+        {
+          role: currentUser.role,
+          email: currentUser.email,
+        }
+      );
       const newProduct = await ProductService.createProduct(productData);
       req.logger.info('Producto creado exitosamente:', newProduct);
       res.redirect('/api/products');
@@ -94,22 +106,31 @@ export default class ProductController {
     try {
       const { _id } = req.body;
       if (!_id) {
-        CustomError.createError({
-          name: 'Error validando el id del producto',
-          cause: generatorProductIdError(_id),
-          message: 'Ocurrio un error mientras obteniamos el producto por id.',
-          code: EnumsError.BAD_REQUEST_ERROR,
-        });
+          throw CustomError.createError({
+              name: 'Error validando el id del producto',
+              cause: generatorProductIdError(_id),
+              message: 'Ocurrió un error mientras obteníamos el producto por id.',
+              code: EnumsError.BAD_REQUEST_ERROR,
+          });
       }
-
+      const productToDelete = await ProductService.getProductById(_id);
+      if (!productToDelete) {
+          req.logger.error('Producto no encontrado');
+          res.status(404).send('Producto no encontrado');
+          return;
+      }
+      const currentUser = req.user;
+      if (currentUser.role === 'premium' && productToDelete.owner.email !== currentUser.email) {
+          req.logger.error('Usuario premium no autorizado para borrar este producto');
+          res.status(403).send('Acceso no autorizado');
+          return;
+      }
       const deletedProduct = await ProductService.deleteProductById(_id);
-
       if (!deletedProduct) {
-        req.logger.error('Producto no encontrado o no se pudo eliminar');
-        res.status(404).send('Producto no encontrado o no se pudo eliminar');
-        return;
+          req.logger.error('Producto no se pudo eliminar');
+          res.status(500).send('Producto no se pudo eliminar');
+          return;
       }
-
       req.logger.info('Producto Eliminado', _id);
       res.status(204).redirect('/api/products');
     } catch (error) {
@@ -130,17 +151,27 @@ export default class ProductController {
   static async updateProductById(req, res) {
     try {
       const { _id, title, description, price, thumbnail, code, stock } = req.body;
-      const updateData = { title, description, price, thumbnail, code, stock };
-      const updatedProduct = await ProductService.updateProductById(_id, updateData);
-
-      if (!updatedProduct) {
-        console.error('Producto no encontrado o no se pudo actualizar');
-        res.status(404).send('Producto no encontrado o no se pudo actualizar');
-        return;
-      }
-
-      req.logger.info('Producto Actualizado', updatedProduct);
-      res.status(204).redirect('/api/products');
+        const updateData = { title, description, price, thumbnail, code, stock };
+        const productToUpdate = await ProductService.getProductById(_id);
+        if (!productToUpdate) {
+            req.logger.error('Producto no encontrado');
+            res.status(404).send('Producto no encontrado');
+            return;
+        }
+        const currentUser = req.user;
+        if (currentUser.role === 'premium' && productToUpdate.owner.email !== currentUser.email) {
+            req.logger.error('Usuario premium no autorizado para actualizar este producto');
+            res.status(403).send('Acceso no autorizado');
+            return;
+        }
+        const updatedProduct = await ProductService.updateProductById(_id, updateData);
+        if (!updatedProduct) {
+            req.logger.error('Producto no se pudo actualizar');
+            res.status(500).send('Producto no se pudo actualizar');
+            return;
+        }
+        req.logger.info('Producto Actualizado', updatedProduct);
+        res.status(204).redirect('/api/products');
     } catch (error) {
       console.error('No se pudo actualizar el producto:', error);
       res.status(500).send('Error al actualizar producto');

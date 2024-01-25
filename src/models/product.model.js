@@ -7,7 +7,11 @@ const productSchema = new Schema({
 	price:{type:Number,required:true},
 	thumbnail:{type:String, required:true, unique:true},
 	code:{type:String, required:true, unique:true},
-	stock:{type:Number,required:true}
+	stock:{type:Number,required:true},
+	owner: {
+        role: { type: String, default: 'ADMIN' },
+        email: { type: String, default: 'admin@example.com' }
+    }
 },{timestamps:true});
 
 productSchema.plugin(mongoosePaginate)
