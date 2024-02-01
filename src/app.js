@@ -62,7 +62,7 @@ const swaggerOptions = {
         openapi:'3.0.1',
         info: {
             title: 'Ecommerce API',
-            description: 'Esta es la documentacion de la API creada en el curso de CoderHouse. Para que funcionen correctamente las rutas mostradas en el documento, es necesario iniciar sesion o registrarse e iniciar sesion. Todo esta diseñado para que se haga todo desde las vistas'
+            description: 'Esta es la documentacion de la API creada en el curso de CoderHouse. Para que funcionen correctamente las rutas mostradas en el documento, es necesario iniciar sesion o registrarse e iniciar sesion. Todo esta diseñado para que se haga todo desde las vistas. Los usuarios que se registran tienen role:usuario, para ser admin se tienen que actualizar desde la bd'
         }
     },
     apis:[path.join( __dirname,'docs', '**', '*.yaml')]
