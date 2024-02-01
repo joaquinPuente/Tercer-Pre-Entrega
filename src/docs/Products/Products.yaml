@@ -1,0 +1,156 @@
+paths:
+  /api/products: 
+    get: 
+      summary: Obtenemos todos los productos
+      tags:
+        - Products 
+      responses: 
+        200:
+          description: Los productos fueron obtenidos correctamente de la base de datos
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        500:
+          description: Hubo un error al obtener los productos desde la base de datos
+  /api/products/{pid}:
+    get:
+      summary: Obtenemos producto segun su identificador (ID)
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          description: Identificador  del producto
+          schema:
+            type: string
+      responses: 
+        200:
+          description: Producto encontrado en la base de datos
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        400:
+          description: Producto no encontrado
+        500:
+          description: Error interno del servidor 
+  /api/createProduct:
+    post:
+      summary: Creacion de producto. Esto solo lo pueden realizar usuarios con role igual a ADMIN u owner.
+      tag:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/createProduct'
+      responses: 
+        200:
+          description: Producto creado en la base de datos
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        400:
+          description: Producto no creado
+        500:
+          description: Error interno del servidor 
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id del usuario
+        title:
+          type: string
+          description: Título del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        thumbnail:
+          type: string
+          description: Enlace al thumbnail del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: number
+          description: Cantidad en stock del producto
+        owner:
+          type: object
+          properties:
+            role:
+              type: string
+              description: Rol del propietario del producto
+            email:
+              type: string
+              description: Correo electrónico del propietario del producto
+      example:
+        _id: 654167a7a4115462a38ead6e
+        title: Producto1
+        description: Descripción del producto 1
+        price: 29.99
+        thumbnail: https://example.com/thumbnail1.jpg
+        code: ABC123
+        stock: 100
+        owner:
+          role: ADMIN
+          email: admin@example.com
+  requestBodies:
+    createProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        thumbnail:
+          type: string
+          description: Enlace al thumbnail del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: number
+          description: Cantidad en stock del producto
+        owner:
+          type: object
+          properties:
+            role:
+              type: string
+              description: Rol del propietario del producto
+            email:
+              type: string
+              description: Correo electrónico del propietario del producto
+      example:
+        title: Nuevo Producto Desde Swagger
+        description: Descripción del nuevo producto desde Swagger
+        price: 49.99
+        thumbnail: new-thumbnail.jpg
+        code: XYZ789
+        stock: 50
+        owner:
+          role: ADMIN
+          email: admin@example.com
+
+

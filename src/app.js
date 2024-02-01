@@ -1,5 +1,6 @@
-// Importa las bibliotecas necesarias
 import express from "express";
+import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 import passport from 'passport'
 import homeRouter from './routers/api/home.router.js';
 import chatRouter from './routers/api/chat.router.js';
@@ -55,6 +56,21 @@ app.set('view engine', 'handlebars');
 initPassportConfig()
 app.use(passport.initialize())
 app.use(passport.session())
+
+const swaggerOptions = {
+    definition:{ 
+        openapi:'3.0.1',
+        info: {
+            title: 'Ecommerce API',
+            description: 'Esta es la documentacion de la API creada en el curso de CoderHouse'
+        }
+    },
+    apis:[path.join( __dirname,'docs', '**', '*.yaml')]
+}
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+
+console.log('swaggerOptions', swaggerOptions);
 
 app.use('/', homeRouter, indexRouter, sessionRouter, mockingProduct );
 app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter(), ticketBaseController.getRouter() ,chatRouter);
