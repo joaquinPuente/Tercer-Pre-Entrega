@@ -62,15 +62,13 @@ const swaggerOptions = {
         openapi:'3.0.1',
         info: {
             title: 'Ecommerce API',
-            description: 'Esta es la documentacion de la API creada en el curso de CoderHouse'
+            description: 'Esta es la documentacion de la API creada en el curso de CoderHouse. Para que funcionen correctamente las rutas mostradas en el documento, es necesario iniciar sesion o registrarse e iniciar sesion. Todo esta diseñado para que se haga todo desde las vistas'
         }
     },
     apis:[path.join( __dirname,'docs', '**', '*.yaml')]
 }
 const specs = swaggerJsDoc(swaggerOptions)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
-
-console.log('swaggerOptions', swaggerOptions);
 
 app.use('/', homeRouter, indexRouter, sessionRouter, mockingProduct );
 app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter(), ticketBaseController.getRouter() ,chatRouter);

@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import cart from './cart.model.js';
 
 const userSchema = mongoose.Schema({
     first_name: String,

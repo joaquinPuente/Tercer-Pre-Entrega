@@ -1,0 +1,106 @@
+paths:
+  /api/cart:
+    get:
+      summary: Obtener detalles del carrito del usuario
+      tags:
+        - Cart
+      responses:
+        200:
+          description: Detalles del carrito obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartDetails'
+        500:
+          description: Error al obtener detalles del carrito
+
+  /api/removeFromCart:
+    post:
+      summary: Eliminar producto del carrito
+      tags:
+        - Cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveItem'
+      responses:
+        200:
+          description: Producto eliminado del carrito correctamente
+        500:
+          description: Error al eliminar producto del carrito
+
+  /api/addToCart:
+    post:
+      summary: Agregar producto al carrito. Para que esto pueda ser realizado, es necesario que el role de usuario sea tipo 'usuario'. No esta permitido que un role 'ADMIN' o 'premium' agregue productos al carrito. 
+      tags:
+        - Cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addItem'
+      responses:
+        200:
+          description: Producto agregado al carrito correctamente
+        500:
+          description: Error al agregar producto al carrito
+  /api/{:cid}/purchase:
+    get:
+      summary: A partir de un req.session se solicita que busque el carrito del cliente, realiza la compra y genera un ticket. Compra lo que hay en stock y lo descuenta del stock en general. Si no puede agregar ciertos productos, los comenta en el mismo ticket. Al finalizar redirecciona a la vista donde se genera el ticket y luego se puede acceder a otra la cual se pueden ver los detalles del ticket.
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Identificador del carrito del usuario
+          schema:
+            type: string
+      responses:
+        200:
+          description: Detalles del carrito obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartDetails'
+        500:
+          description: Error al agregar producto al carrito
+
+components:
+  schemas:
+    CartDetails:
+      type: array
+      items:
+        $ref: '#/components/schemas/CartItem'
+
+    CartItem:
+      type: object
+      properties:
+        product:
+          type: string
+          description: ID del producto
+        quantity:
+          type: number
+          description: Cantidad de productos en el carrito
+
+    RemoveItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: ID del producto
+      example:
+        "productId": "654167a7a4115462a38ead6b"
+    
+    addItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: ID del producto
+      example:
+        "productId": "654167a7a4115462a38ead6b"
+

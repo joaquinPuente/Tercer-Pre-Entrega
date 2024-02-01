@@ -1,6 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import product from './product.model.js'
-import user from './user.model.js'
 
 const cartItemSchema = new Schema({
     product: { type: Schema.Types.ObjectId, ref: 'products' },
