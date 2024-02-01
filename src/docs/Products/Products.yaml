@@ -42,8 +42,8 @@ paths:
           description: Error interno del servidor 
   /api/createProduct:
     post:
-      summary: Creacion de producto. Esto solo lo pueden realizar usuarios con role igual a ADMIN u owner.
-      tag:
+      summary: Creacion de producto. Esto solo lo pueden realizar usuarios con role igual a ADMIN u owner. Es utilizado el metodo POST porque desde la misma pagina/vista se encuentra el formulario
+      tags:
         - Products
       requestBody:
         required: true
@@ -64,7 +64,55 @@ paths:
           description: Producto no creado
         500:
           description: Error interno del servidor 
-
+  /api/updateProduct:
+    post:
+      summary: Actualizacion de producto. Esto solo lo pueden realizar usuarios con role igual a ADMIN u owner. Es utilizado el metodo POST porque desde la misma pagina/vista se encuentra el formulario
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/updateProduct'
+      responses: 
+        200:
+          description: Producto actualizado en la base de datos
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        400:
+          description: Producto no actualizado
+        500:
+          description: Error interno del servidor 
+  /api/deleteProduct:
+    post:
+      summary: Eliminado de producto. Esto solo lo pueden realizar usuarios con role igual a ADMIN u owner. Es utilizado el metodo POST porque desde la misma pagina/vista se encuentra el formulario
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/deleteProduct'
+      responses: 
+        200:
+          description: Producto borrado en la base de datos
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        400:
+          description: Producto no eliminado
+        500:
+          description: Error interno del servidor 
+          
 components:
   schemas:
     Products:
@@ -105,7 +153,7 @@ components:
         title: Producto1
         description: Descripción del producto 1
         price: 29.99
-        thumbnail: https://example.com/thumbnail1.jpg
+        thumbnail: thumbnail1.jpg
         code: ABC123
         stock: 100
         owner:
@@ -152,5 +200,45 @@ components:
         owner:
           role: ADMIN
           email: admin@example.com
+    updateProduct:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id del producto
+        title:
+          type: string
+          description: Título del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        thumbnail:
+          type: string
+          description: Enlace al thumbnail del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: number
+          description: Cantidad en stock del producto
+      example:
+        _id: 65bb0d45ee83070422a51a64
+        title: Titulo actualizado Desde Swagger
+        description: Descripción actualizada del nuevo producto desde Swagger
+        price: 49.99
+        thumbnail: new-thumbnail.jpg
+        code: XYZ789
+        stock: 50
+    deleteProduct:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id del producto
+      example:
+        _id: 65bb0d45ee83070422a51a64
 
 
