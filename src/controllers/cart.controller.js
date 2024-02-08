@@ -29,8 +29,16 @@ export default class CartController {
 
   static async addToCart(req, res) {
     try {
+      let userId;
+      if (req.session.user && req.session.user._id) {
+          userId = req.session.user._id;
+      } else if (req.body.userCart) {
+          userId = req.body.userCart;
+      } else {
+          throw new Error('No se proporcionó userId en la sesión ni en el cuerpo de la solicitud.');
+      }
+
       const { productId } = req.body;
-      const userId = req.session.user._id;
       await CartService.addToCart(userId, productId);
       res.redirect('/api/products');
     } catch (error) {
@@ -38,6 +46,8 @@ export default class CartController {
       res.status(500).send('Error al agregar al carrito');
     }
   }
+
+
 
   static async generateTicket(req, res) {
     try {

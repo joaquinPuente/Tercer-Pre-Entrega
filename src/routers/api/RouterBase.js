@@ -53,7 +53,7 @@ export default class RouterBase {
   handlePolicies = (policies) => async (req, res, next) => {
     try {
 
-        const role = req.session.user ? req.session.user.role : null;
+        const role = req.session.user ? req.session.user.role : null ;
 
         if (policies.includes('PUBLIC') && req.path !== '/addToCart') {
             return next();
@@ -70,13 +70,13 @@ export default class RouterBase {
         )) {
             return next(); 
         } else if (role === 'ADMIN' || role === 'premium') {
-            if (req.path !== '/addToCart') {
+            if (req.path !== '/api/addToCart') {
                 return next();
             } else {
-                return res.status(401).json({ message: 'Unauthorized' });
+                return res.status(401).json({ message: 'Unauthorized from RouterBase' });
             }
         } else {
-            return res.status(401).json({ message: 'Unauthorized' });
+            return res.status(401).json({ message: 'Unauthorized from RouterBase 2' });
         }
     } catch (error) {
         console.error('An error occurred:', error.message);

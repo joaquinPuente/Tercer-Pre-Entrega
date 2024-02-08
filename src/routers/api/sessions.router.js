@@ -26,7 +26,7 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/login'
             console.log('¡Se ha creado un nuevo carrito para el usuario!');
         }
         req.logger.info('Inicio de sesion correctamente')
-        res.redirect('/api/products');
+        res.status(200).redirect('/api/products');
     } catch (error) {
         req.logger.warning('Error al iniciar sesión:', error);
         res.status(500).send('Error al iniciar sesión');
