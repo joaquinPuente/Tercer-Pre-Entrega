@@ -51,32 +51,39 @@ export default class RouterBase {
   
 
   handlePolicies = (policies) => async (req, res, next) => {
-    const { role } = req.session.user;
+    try {
 
-    if (policies[0] === 'PUBLIC' && req.path !== '/addToCart') {
-        return next();
-    }
+        const role = req.session.user ? req.session.user.role : null;
 
-    if (role === 'usuario' && req.path === '/addToCart' && req.method === 'POST') {
-        return next();
-    }
-
-    if ((role === 'ADMIN' || role === 'premium') && (
-        req.path.startsWith('/createProduct') ||
-        req.path.startsWith('/deleteProduct') ||
-        req.path.startsWith('/updateProduct')
-    )) {
-        return next(); 
-    } else if (role === 'ADMIN' || role === 'premium') {
-        if (req.path !== '/addToCart') {
+        if (policies.includes('PUBLIC') && req.path !== '/addToCart') {
             return next();
-        } else {
-            return res.status(401).json({ message: 'Unauthorized ️' });
         }
-    } else {
-        return res.status(401).json({ message: 'Unauthorized ️' });
+
+        if (role === 'usuario' && req.path === '/addToCart' && req.method === 'POST') {
+            return next();
+        }
+
+        if ((role === 'ADMIN' || role === 'premium') && (
+            req.path.startsWith('/createProduct') ||
+            req.path.startsWith('/deleteProduct') ||
+            req.path.startsWith('/updateProduct')
+        )) {
+            return next(); 
+        } else if (role === 'ADMIN' || role === 'premium') {
+            if (req.path !== '/addToCart') {
+                return next();
+            } else {
+                return res.status(401).json({ message: 'Unauthorized' });
+            }
+        } else {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+    } catch (error) {
+        console.error('An error occurred:', error.message);
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
+
 
     
 }

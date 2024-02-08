@@ -21,6 +21,7 @@ export const init = () => {
     passport.use('register', new LocalStrategy(opts, async (req, email,password,done)=>{
         try {
             const user = await userModel.findOne({email});
+            console.log(user);
             if(user){
                 return done(new Error('User already register'));
             }

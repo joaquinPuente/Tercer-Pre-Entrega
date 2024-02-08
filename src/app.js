@@ -75,5 +75,4 @@ app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter
 
 app.use(errorHandler);
 
-
 export default app;

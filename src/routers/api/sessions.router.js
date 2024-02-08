@@ -82,7 +82,7 @@ router.get('/api/session/current', requireAuth, async (req, res) => {
       req.logger.fatal('Error al obtener información de sesión:', error);
       res.status(500).json({ error: 'Error al obtener información de sesión' });
     }
-  });
+});
 
 router.get('/forgot-password', async (req,res)=>{
     try {

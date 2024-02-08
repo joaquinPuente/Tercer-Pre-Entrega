@@ -16,7 +16,7 @@ export default class ProductController {
       response.user = req.session.user;
 
       req.logger.info('Obtenidos todos los productos exitosamente');
-      res.render('products', response);
+      res.status(200).render('products', response);
     } catch (error) {
       req.logger.error('Error al obtener productos:', error);
       res.status(500).send('Error al obtener productos');
