@@ -1,0 +1,1 @@
+Aca es donde se ven los documentos de los usuarios por su _id + _ + tipo de dato + _ + tipo de archivo
