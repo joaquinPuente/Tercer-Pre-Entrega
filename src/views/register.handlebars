@@ -1,5 +1,6 @@
 <article>
-    <form action="/sessions" method="post">
+    <form action="/sessions" method="post" id="registrationForm">
+
     <header>
         <h1>Registro</h1>
     </header>
@@ -9,9 +10,20 @@
     <input type="email" name="email" placeholder="Correo" >
     <input type="number" name="age" placeholder="Edad" >
     <input type="password" name="password" placeholder="contraseña" >
+    <input type="hidden" name="last_connection" id="last_connection">
 
     <footer>
         <input type="submit" value="Enviar">
     </footer>
+
     </form>
+
+    <script>
+        const currentDate = new Date();
+        currentDate.setHours(currentDate.getHours() - 3);
+        const formattedDate = currentDate.toISOString();
+        const lastConnectionField = document.getElementById('last_connection');
+        lastConnectionField.value = formattedDate;
+    </script>
+
 </article>
