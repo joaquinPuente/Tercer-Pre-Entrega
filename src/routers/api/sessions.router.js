@@ -159,28 +159,6 @@ router.post('/reset-password', async (req, res) => {
     }
 });
 
-router.post('/api/session/documents/:typeFile', requireAuth, uploader.single('file'), async (req, res) => {
-    try {
-        if (!req.session.user) {
-            return res.status(401).json({ error: 'No hay sesión activa' });
-        }
-        const userId = req.session.user._id;
-        const user = await userModel.findById(userId);
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-        const { filename: reference, originalname: name } = req.file;
-        const newDocument = { name, reference };
-        user.documents.push(newDocument);
-        await user.save();
-        req.logger.info('Documento subido correctamente');
-        res.status(200).json({ message: 'Documento subido correctamente', document: newDocument });
-    } catch (error) {
-        req.logger.error('Error al subir documento:', error);
-        res.status(500).json({ error: 'Error al subir documento' });
-    }
-});
-
 router.post('/api/users/:uid/documents/:typeFile', requireAuth, uploader.single('file'), async (req, res) => {
     try {
         const userId = req.params.uid;
