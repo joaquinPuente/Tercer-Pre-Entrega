@@ -1,5 +1,4 @@
-//import UserService from '../services/user.service.js';
-//import { createHash, isValidPassword } from '../utils.js';
+import UserDTO from "../dto/user.dto.js";
 
 export default class UserController {
 
@@ -37,30 +36,13 @@ export default class UserController {
     }
   }
 
-  static async githubLogin(req, res) {
-    // Logica para iniciar sesión con GitHub
-  }
-
-  static async githubCallback(req, res) {
-    // Logica para el callback de inicio de sesión con GitHub
-  }
-
-  static async recoverPassword(req, res) {
-    // Logica para recuperación de contraseña
-  }
-
   static async getCurrentSession(req, res) {
     try {
-      // Logica para obtener información de la sesión actual del usuario
       if (!req.session.user) {
         return res.status(401).json({ error: 'No hay sesión activa' });
       }
-      
-
-      const userDTO = {
-        // Datos del usuario obtenidos desde la sesión
-      };
-
+      const user = req.session.user;
+      const userDTO = UserDTO(user)
       res.status(200).json(userDTO);
     } catch (error) {
       console.error('Error al obtener información de sesión:', error);

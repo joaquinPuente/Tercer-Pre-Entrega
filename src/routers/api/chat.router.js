@@ -1,5 +1,5 @@
 import express from 'express';
-import Message from '../../models/chat.model.js';
+import Message from '../../dao/models/chat.model.js';
 
 const router = express.Router();
 

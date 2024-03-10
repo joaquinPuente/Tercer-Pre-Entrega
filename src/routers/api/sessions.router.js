@@ -1,8 +1,8 @@
 import { Router } from "express";
 import passport from 'passport'
 import { createHash, isValidPassword } from "../../utils.js";
-import userModel from "../../models/user.model.js";
-import cartModel from '../../models/cart.model.js'
+import userModel from "../../dao/models/user.model.js";
+import cartModel from '../../dao/models/cart.model.js'
 import UserDTO from "../../dto/user.dto.js";
 import emailService from '../../service/mails.service.js'
 import jwt from 'jsonwebtoken';

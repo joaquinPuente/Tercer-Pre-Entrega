@@ -4,6 +4,9 @@ import swaggerUi from 'swagger-ui-express'
 import passport from 'passport'
 import homeRouter from './routers/api/home.router.js';
 import chatRouter from './routers/api/chat.router.js';
+
+import usuarioRouter from './routers/api/usuario.router.js'
+
 import indexRouter from './routers/api/index.router.js';
 import sessionRouter from './routers/api/sessions.router.js'
 import mockingProduct from './routers/api/mockingProduct.router.js'
@@ -72,6 +75,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
 app.use('/', homeRouter, indexRouter, sessionRouter, mockingProduct );
 app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter(), ticketBaseController.getRouter() ,chatRouter);
+app.use('/test', sessionBaseController.getRouter() )
 
 app.use(errorHandler);
 

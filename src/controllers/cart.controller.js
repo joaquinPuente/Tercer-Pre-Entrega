@@ -1,4 +1,4 @@
-import TicketModel from "../models/ticket.model.js";
+import TicketModel from "../dao/models/ticket.model.js";
 import ProductService from "../service/product.service.js";
 import CartService from "../service/cart.service.js";
 import TicketService from "../service/ticket.service.js";

@@ -1,6 +1,6 @@
 import TicketService from "../service/ticket.service.js";
 import EmailService from '../service/mails.service.js'
-import ticketModel from "../models/ticket.model.js";
+import ticketModel from "../dao/models/ticket.model.js";
 
 
 export default class TicketController {

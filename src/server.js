@@ -1,9 +1,8 @@
 import http from 'http';
 import app from './app.js';
-import config from "./config.js";
 import { init } from './db/mongoDB.js';
 import { Server } from 'socket.io';
-import Message from './models/chat.model.js';
+import Message from './dao/models/chat.model.js';
 
 await init();
 
