@@ -9,4 +9,4 @@ export default class UserDTO {
       this.createdAt = user.createdAt;
       this.updatedAt = user.updatedAt;
     }
-  }
+}

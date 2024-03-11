@@ -17,7 +17,7 @@ export default class SessionRouter extends RouterBase {
   }
 
   init() {
-    this.get('/users', ['PUBLIC'], UsuarioController.getAllUsers );
+    this.get('/users', ['PUBLIC'], UsuarioController.getAllUsersInfo );
     this.get('/api/session/current', ['PUBLIC'], requireAuth, UsuarioController.getCurrentSession);
     this.post('/sessions', ['PUBLIC'],  passport.authenticate('register', { failureRedirect: '/register' }), UsuarioController.login);
     this.post('/login', ['PUBLIC'], passport.authenticate('login', { failureRedirect: '/login' }), UsuarioController.login);
@@ -30,7 +30,7 @@ export default class SessionRouter extends RouterBase {
     this.post('/reset-password', ['PUBLIC'], UsuarioController.resetPassword);
     this.post('/users/:uid/documents/:typeFile', ['PUBLIC'], requireAuth, uploader.single('file'), UsuarioController.uploadDocument )
     this.get('/user/premium/:id', ['PUBLIC'], UsuarioController.updateToPremium )
-
+    this.delete('/users/delete-users-inactives', ['PUBLIC'], UsuarioController.deleteUsersInactives )
   }
 
   getRouter() {

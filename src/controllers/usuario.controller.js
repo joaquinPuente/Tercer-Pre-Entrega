@@ -6,6 +6,7 @@ import emailService from '../service/mails.service.js'
 import jwt from 'jsonwebtoken'
 import config from '../config.js'
 import UserDTO from "../dto/user.dto.js";
+import AdminUserDTO from "../dto/admin.user.dto.js";
 
 export default class UsuarioController {
 
@@ -19,12 +20,13 @@ export default class UsuarioController {
     }
 
     static async getAllUsersInfo(req, res) {
-        try {
-          const users = await UsuarioService.getAllUsers();
-          res.status(200).render('users', users)
-        } catch (error) {
-          res.status(500).json({ error: error.message });
-        }
+      try {
+        const users = await UsuarioService.getAllUsers();
+        const adminUserDTO = new AdminUserDTO(users);
+        res.render('users', adminUserDTO); 
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
     }
 
     static async createUser(req, res) {
@@ -86,6 +88,34 @@ export default class UsuarioController {
         res.status(204).send();
       } catch (error) {
         res.status(500).json({ error: error.message });
+      }
+    }
+
+    static async deleteUsersInactives(req, res) {
+      try {
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          const usersToDelete = await userModel.find({ last_connection: { $lt: yesterday } });
+          const deletedUsersCount = usersToDelete.length;
+          if (deletedUsersCount > 0) {
+              const usersDeletedPromises = usersToDelete.map(async user => {
+                  // Envía un correo de notificación para cada usuario eliminado
+                  const message = `Tu cuenta ha sido eliminada de la página debido a inactividad.`;
+                  await emailService.sendEmail(
+                      user.email, // Correo del usuario eliminado
+                      'Tu cuenta ha sido eliminada', // Asunto del correo
+                      message // Contenido del correo
+                  );
+              });
+              await Promise.all(usersDeletedPromises); // Espera a que se envíen todos los correos
+              // Elimina los usuarios de la base de datos
+              await userModel.deleteMany({ last_connection: { $lt: yesterday } });
+              res.status(200).json({ message: `${deletedUsersCount} usuarios eliminados correctamente.` });
+          } else {
+              res.status(404).json({ message: 'No se encontraron usuarios para eliminar.' });
+          }
+      } catch (error) {
+          res.status(500).json({ error: error.message });
       }
     }
 
