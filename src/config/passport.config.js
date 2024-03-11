@@ -54,7 +54,7 @@ export const init = () => {
     } ));
 
     passport.use('github', new GithubStrategy(githubOptions, async (accessToken, refreshToken, profile, done)=>{
-        console.log('profile',profile);
+        console.log('profile', profile);
         const email = profile._json.email;
         let user = await userModel.findOne({email: email});
         if(user){
