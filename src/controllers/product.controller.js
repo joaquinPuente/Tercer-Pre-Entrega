@@ -3,6 +3,7 @@ import ProductDTO from '../dto/product.dto.js';
 import { CustomError } from '../service/errors/CustomError.js';
 import { generatorProductError, generatorProductIdError } from '../service/errors/CauseMessage.js';
 import EnumsError from '../service/errors/EnumsError.js';
+import emailService from '../service/mails.service.js'
 
 export default class ProductController {
   static async getAllProducts(req, res) {
@@ -104,38 +105,44 @@ export default class ProductController {
 
   static async deleteProductById(req, res) {
     try {
-      const { _id } = req.body;
-      if (!_id) {
-          throw CustomError.createError({
-              name: 'Error validando el id del producto',
-              cause: generatorProductIdError(_id),
-              message: 'Ocurrió un error mientras obteníamos el producto por id.',
-              code: EnumsError.BAD_REQUEST_ERROR,
-          });
-      }
-      const productToDelete = await ProductService.getProductById(_id);
-      if (!productToDelete) {
-          req.logger.error('Producto no encontrado');
-          res.status(404).send('Producto no encontrado');
-          return;
-      }
-      const currentUser = req.user;
-      if (currentUser.role === 'premium' && productToDelete.owner.email !== currentUser.email) {
-          req.logger.error('Usuario premium no autorizado para borrar este producto');
-          res.status(403).send('Acceso no autorizado');
-          return;
-      }
-      const deletedProduct = await ProductService.deleteProductById(_id);
-      if (!deletedProduct) {
-          req.logger.error('Producto no se pudo eliminar');
-          res.status(500).send('Producto no se pudo eliminar');
-          return;
-      }
-      req.logger.info('Producto Eliminado', _id);
-      res.status(204).redirect('/api/products');
+        const { _id } = req.body;
+        if (!_id) {
+            throw CustomError.createError({
+                name: 'Error validando el id del producto',
+                cause: generatorProductIdError(_id),
+                message: 'Ocurrió un error mientras obteníamos el producto por id.',
+                code: EnumsError.BAD_REQUEST_ERROR,
+            });
+        }
+        const productToDelete = await ProductService.getProductById(_id);
+        if (!productToDelete) {
+            req.logger.error('Producto no encontrado');
+            res.status(404).send('Producto no encontrado');
+            return;
+        }
+        const currentUser = req.user;
+        if (currentUser.role === 'premium' && productToDelete.owner.email !== currentUser.email) {
+            req.logger.error('Usuario premium no autorizado para borrar este producto');
+            res.status(403).send('Acceso no autorizado');
+            return;
+        }
+        await emailService.sendEmail(
+            productToDelete.owner.email, 
+            'Tu producto ha sido eliminado', 
+            `Hola ${productToDelete.owner.name},\n\nTu producto "${productToDelete.name}" ha sido eliminado.` // Contenido del correo
+        );
+
+        const deletedProduct = await ProductService.deleteProductById(_id);
+        if (!deletedProduct) {
+            req.logger.error('Producto no se pudo eliminar');
+            res.status(500).send('Producto no se pudo eliminar');
+            return;
+        }
+        req.logger.info('Producto Eliminado', _id);
+        res.status(204).redirect('/api/products');
     } catch (error) {
-      req.logger.error('No se pudo borrar el producto:', error);
-      res.status(500).send('Error al borrar producto');
+        req.logger.error('No se pudo borrar el producto:', error);
+        res.status(500).send('Error al borrar producto');
     }
   }
 
