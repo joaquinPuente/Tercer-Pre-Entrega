@@ -129,7 +129,7 @@ export default class ProductController {
         await emailService.sendEmail(
             productToDelete.owner.email, 
             'Tu producto ha sido eliminado', 
-            `Hola ${productToDelete.owner.name},\n\nTu producto "${productToDelete.name}" ha sido eliminado.` // Contenido del correo
+            `Hola ${productToDelete.owner.email},\n\nTu producto "${productToDelete.title}" ha sido eliminado a pedido del ADMIN. Ante cualquier duda contactarse con ${currentUser.email}` 
         );
 
         const deletedProduct = await ProductService.deleteProductById(_id);

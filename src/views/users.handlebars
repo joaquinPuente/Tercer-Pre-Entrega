@@ -10,7 +10,8 @@
                 <th>Ultima conexion</th>
                 <th>Documentos</th>
                 <th>Creado el</th>
-                <th>Actualizado el</th>
+                <th>Pasar a premium</th>
+                <th>Eliminar usuario</th>
             </tr>
         </thead>
         <tbody>
@@ -30,8 +31,14 @@
                     </ul>
                 </td>
                 <td>{{this.createdAt}}</td>
-                <td>{{this.updatedAt}}</td>
+                <td>
+                    <a href="/user/premium/{{this.id}}">✅✅✅</a>
+                </td>                
+                <td>
+                    <a href="/user/delete/{{this.id}}">🗑️🗑️🗑️</a>
+                </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
+    <a href="/api/products">Volver a productos</a>

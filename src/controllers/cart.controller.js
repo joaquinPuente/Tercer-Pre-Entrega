@@ -47,8 +47,6 @@ export default class CartController {
     }
   }
 
-
-
   static async generateTicket(req, res) {
     try {
       const email = req.session.user.email;
