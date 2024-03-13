@@ -1,4 +1,4 @@
-import Cart from '../models/cart.model.js';
+import Cart from './models/cart.model.js';
 
 export default class CartManager {
     // Leer todos los carritos

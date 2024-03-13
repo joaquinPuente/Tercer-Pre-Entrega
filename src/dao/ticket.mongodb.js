@@ -1,4 +1,4 @@
-import TicketModel from '../models/ticket.model.js';
+import TicketModel from './models/ticket.model.js';
 
 export default class TicketDAO {
   static async getAll(criteria, options) {

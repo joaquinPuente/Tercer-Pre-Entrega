@@ -1,4 +1,4 @@
-import UserDao from "../models/user.model.js";
+import UserDao from "./models/user.model.js";
 
 export default class UserManager {
   static async getAllUsers(criteria, options) {
