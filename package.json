@@ -5,8 +5,9 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
+    "start": "node .",
     "run": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon --exec \"node -r dotenv/config\" src/app.js"
   },
   "keywords": [],
   "author": "",
