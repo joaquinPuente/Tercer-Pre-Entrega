@@ -43,7 +43,7 @@ export default class TicketController {
                     []
                 );
 
-                await ticketModel.deleteOne({ purchaser : email })
+                await TicketService.deleteByPurchaserEmail(email)
 
                 res.status(200).render('compraFinalizada')
             } else {

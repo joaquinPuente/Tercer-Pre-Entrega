@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node .",
     "run": "node .",
-    "dev": "nodemon --exec \"node -r dotenv/config\" src/app.js"
+    "dev": "nodemon --exec \"node -r dotenv/config\" src/app.js",
+    "test": "node ."
   },
   "keywords": [],
   "author": "",

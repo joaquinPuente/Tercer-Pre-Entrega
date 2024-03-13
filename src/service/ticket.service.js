@@ -24,4 +24,8 @@ export default class TicketService {
     static findByPurchaserEmail(email) {
         return TicketModel.find({ purchaser: email });
     }
+
+    static async deleteByPurchaserEmail(email) {
+        return await TicketModel.deleteMany({ purchaser: email });
+    }
 }
