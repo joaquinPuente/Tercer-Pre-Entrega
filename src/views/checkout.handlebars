@@ -1,7 +1,7 @@
 <div class="container">
     <form id="payment-form">
         <h1>Pasarela de pago</h1>
-        <div id="card-element"><!-- Elemento de Stripe --></div>
+        <div id="card-element"></div>
         <br>
         <button id="submit">
             <span id="button-text">Pagar</span>
@@ -16,7 +16,6 @@
     var stripe = Stripe('{{stripe_key_public}}');
     var elements = stripe.elements();
     
-    // Configurar el elemento de tarjeta para omitir el campo del código postal
     var cardElement = elements.create('card', {
         hidePostalCode: true
     });
@@ -40,7 +39,6 @@
             submitButton.disabled = false;
             spinner.classList.add('d-none');
         } else {
-            // Enviar el token al backend
             fetch('/api/payment', {
                 method: 'POST',
                 headers: {
@@ -50,7 +48,6 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Redirigir al usuario a la ruta /api/sendMail
                     window.location.href = '/api/sendEmail';
                 } else {
                     throw new Error('Error en el pago');
@@ -58,7 +55,6 @@
             })
             .catch(error => {
                 console.error('no paso el pago',error);
-                // Manejar errores de pago
             })
             .finally(() => {
                 submitButton.disabled = false;

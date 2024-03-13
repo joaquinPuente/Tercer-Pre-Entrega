@@ -1,8 +1,9 @@
 import Stripe from 'stripe'
+import config from '../config.js';
 
 export default class PaymentService {
     constructor() {
-        this.stripe = new Stripe('sk_test_51OsUw7Rto3QfZ1JmNE9yW6wSPmg3faIjrc0nf8W7kS0WopozLEo2ysxolDQPJfL0TDuc6HmcPRHjhCiXEkxrBkfq00bwbFE8wj')
+        this.stripe = new Stripe(config.stripe_key_secret)
     }
 
     createPaymentIntent(data) {

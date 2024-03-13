@@ -50,7 +50,7 @@ export default class RouterBase {
 
   
 
-  handlePolicies = (policies) => async (req, res, next) => {
+  handlePoliciesFuncional = (policies) => async (req, res, next) => {
     try {
 
         const role = req.session.user ? req.session.user.role : null ;
@@ -83,6 +83,53 @@ export default class RouterBase {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
+
+  handlePolicies = (policies) => async (req, res, next) => {
+    try {
+        const role = req.session.user ? req.session.user.role : null;
+
+        if (policies.includes('PUBLIC')) {
+            return next();
+        }
+
+        switch (role) {
+            case 'usuario':
+                if (req.path === '/addToCart' && req.method === 'POST') {
+                    return next();
+                }
+                break;
+            case 'ADMIN':
+              if (
+                  req.path.startsWith('/createProduct') ||
+                  req.path.startsWith('/deleteProduct') ||
+                  req.path.startsWith('/updateProduct') ||
+                  req.path.startsWith('/users-information') ||
+                  req.path.startsWith('/user/premium/:id') ||
+                  req.path.startsWith('/user/delete/:id') ||
+                  req.path.startsWith('/users/delete-users-inactives')
+                  ) {
+                      return next();
+                  }
+              break;
+
+            case 'premium':
+                if (
+                    req.path.startsWith('/createProduct') ||
+                    req.path.startsWith('/deleteProduct') ||
+                    req.path.startsWith('/updateProduct')
+                ) {
+                    return next();
+                }
+                break;
+            default:
+                return res.status(401).json({ message: 'No estas autorizado por tu nivel de usuario!' });
+        }
+        return res.status(401).json({ message: 'Inautorizado' });
+    } catch (error) {
+        console.error('An error occurred:', error.message);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
 
 
     
