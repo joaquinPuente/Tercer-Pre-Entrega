@@ -13,9 +13,10 @@ switch (config.persistence) {
     const MongoDBCartDao = await import('./cart.mongodb.dao.js');
 
     ProductDao = MongoDBProductDao.default;
+    console.log('ProductDao', ProductDao);
     UserDao = MongoDBUserDao.default;
     CartDao = MongoDBCartDao.default;
-    break;
+  break;
 
   default:
     const MemoryProductDao = await import('./product.memory.dao.js');
@@ -25,7 +26,7 @@ switch (config.persistence) {
     ProductDao = MemoryProductDao.default;
     UserDao = MemoryUserDao.default;
     CartDao = MemoryCartDao.default;
-    break;
+  break;
 }
 
 export { ProductDao, UserDao, CartDao };
