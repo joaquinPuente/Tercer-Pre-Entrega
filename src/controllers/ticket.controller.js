@@ -1,7 +1,6 @@
 import TicketService from "../service/ticket.service.js";
 import EmailService from '../service/mails.service.js'
-import ticketModel from "../dao/models/ticket.model.js";
-
+import stripe from 'stripe'
 
 export default class TicketController {
     static async getTicketsByPurchaser(req, res) {
@@ -62,4 +61,38 @@ export default class TicketController {
         }
     }
 
+    static async getCheckout (req,res) {
+        try {
+            res.render('checkout')
+        } catch (error) {
+            res.status(404).json({ error: 'No se pudo ingresar a la vista checkout'} );
+        }
+    }
+
+    static async payment (req, res) {
+        const { card_number, exp_month, exp_year, cvc } = req.body;
+        try {
+
+            
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: 1000,
+                currency: 'usd',
+                payment_method_types: ['card'],
+                payment_method_data: {
+                    type: 'card',
+                    card: {
+                        number: card_number,
+                        exp_month: exp_month,
+                        exp_year: exp_year,
+                        cvc: cvc
+                    }
+                }
+            });
+            res.send('Pago exitoso');
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error en el pago');
+        }
+    };
+    
 }

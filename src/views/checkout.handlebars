@@ -1,0 +1,14 @@
+<div class="container">
+    <form action="/api/charge" method="post">
+        <h1>Pasarela de pago</h1>
+        <label for="card_number">Número de tarjeta:</label>
+        <input type="text" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" required><br>
+        <label for="exp_month">Mes de expiración:</label>
+        <input type="text" id="exp_month" name="exp_month" placeholder="MM" required><br>
+        <label for="exp_year">Año de expiración:</label>
+        <input type="text" id="exp_year" name="exp_year" placeholder="YY" required><br>
+        <label for="cvc">CVC:</label>
+        <input type="text" id="cvc" name="cvc" placeholder="CVC" required><br>
+        <input type="submit" value="Pagar">
+    </form>
+</div>

@@ -11,5 +11,7 @@ export default {
     persistence: process.env.PERSISTENCE,
     google_user: process.env.GOOGLE_USER,
     google_pass: process.env.GOOGLE_PASSWORD,
-    jwt_token: process.env.JWT_TOKEN
+    jwt_token: process.env.JWT_TOKEN,
+    stripe_key_secret: process.env.STRIPE_SECRET_KEY,
+    stripe_key_public: process.env.STRIPE_PUBLIC_KEY,
 };
