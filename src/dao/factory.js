@@ -15,7 +15,7 @@ switch (config.persistence) {
     ProductDao = MongoDBProductDaoModule.default;
     UserDao = MongoDBUserDaoModule.default;
     CartDao = MongoDBCartDaoModule.default;
-  break;
+    break;
 
   case 'memory':
     const MemoryProductDao = await import('./product.memory.dao.js');
@@ -25,11 +25,10 @@ switch (config.persistence) {
     ProductDao = MemoryProductDao.default;
     UserDao = MemoryUserDao.default;
     CartDao = MemoryCartDao.default;
-  break;
+    throw new Error('Persistencia no configurada');
+    
+    break;
 
   default:
     throw new Error('Error al leer Factory_persistence');
-
 }
-
-export { ProductDao, UserDao, CartDao };
