@@ -38,6 +38,7 @@ export default class UserController {
 
   static async getCurrentSession(req, res) {
     try {
+      //infomacion sobre la actual sesion
       if (!req.session.user) {
         return res.status(401).json({ error: 'No hay sesión activa' });
       }

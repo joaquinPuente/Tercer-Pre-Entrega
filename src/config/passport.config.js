@@ -7,7 +7,7 @@ import config from '../config.js'
 
 
 const opts = {
-    usernameField: 'email', //cambio de nombre del cambio a acceder. Esta vez se accede por email.
+    usernameField: 'email', 
     passReqToCallback: true,
 }
 

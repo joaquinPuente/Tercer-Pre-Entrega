@@ -4,9 +4,7 @@ let ProductDao;
 let UserDao;
 let CartDao;
 
-console.log('FACTORY_PERSISTANCE:', config.persistence);
-
-switch ('mongodb') {
+switch (config.persistence || 'mongodb') {
   case 'mongodb':
     const MongoDBProductDaoModule = await import('./product.mongodb.dao.js');
     const MongoDBUserDaoModule = await import('./user.mongodb.dao.js');

@@ -94,7 +94,6 @@ export default class CartController {
           productsAdded.push(productId);
           totalAmountAdded += product.price * quantityToPurchase;
         } else {
-          // Producto sin suficiente stock
           productsNotAdded.push(productId);
         }
       }

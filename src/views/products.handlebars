@@ -71,20 +71,28 @@
 <a href="{{nextLink}}" role="button" class="pageButton"  {{#unless hasNextPage}} disabled {{/unless}}>Siguiente</a>
 
 <script>
-  // Espera a que el documento esté completamente cargado antes de buscar el elemento
   document.addEventListener('DOMContentLoaded', () => {
     const permisos = document.getElementById('permisos');
 
-    // Realiza la verificación y cambia el contenido basado en el usuario
     const userRole = "{{user.role}}";
-  
-    if (userRole === 'ADMIN' || userRole === 'premium') {
-      permisos.innerHTML = `
-        <a href="/api/createProduct">Crear Producto🙌</a>
-        <a href="/api/deleteProduct">Borrar Producto🗑️</a>
-        <a href="/api/updateProduct">Actualizar Producto✏️</a>`;
-    } else {
-      permisos.innerHTML = '';
+
+    switch (userRole) {
+      case 'ADMIN':
+          permisos.innerHTML = `
+          <a href="/api/users-information">Informacion de usuarios👁️</a>
+          <a href="/api/createProduct">Crear Producto🙌</a>
+          <a href="/api/deleteProduct">Borrar Producto🗑️</a>
+          <a href="/api/updateProduct">Actualizar Producto✏️</a>`;
+        break;
+      case 'premium':
+        permisos.innerHTML = `
+          <a href="/api/createProduct">Crear Producto🙌</a>
+          <a href="/api/deleteProduct">Borrar Producto🗑️</a>
+          <a href="/api/updateProduct">Actualizar Producto✏️</a>`;
+        break;
+      default:
+        permisos.innerHTML = '';
+        break;
     }
   });
 </script>

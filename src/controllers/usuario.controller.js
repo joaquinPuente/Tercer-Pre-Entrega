@@ -109,16 +109,14 @@ export default class UsuarioController {
           const deletedUsersCount = usersToDelete.length;
           if (deletedUsersCount > 0) {
               const usersDeletedPromises = usersToDelete.map(async user => {
-                  // Envía un correo de notificación para cada usuario eliminado
                   const message = `Tu cuenta ha sido eliminada de la página debido a inactividad.`;
                   await emailService.sendEmail(
-                      user.email, // Correo del usuario eliminado
-                      'Tu cuenta ha sido eliminada', // Asunto del correo
-                      message // Contenido del correo
+                      user.email,
+                      'Tu cuenta ha sido eliminada', 
+                      message 
                   );
               });
-              await Promise.all(usersDeletedPromises); // Espera a que se envíen todos los correos
-              // Elimina los usuarios de la base de datos
+              await Promise.all(usersDeletedPromises); 
               await userModel.deleteMany({ last_connection: { $lt: yesterday } });
               res.status(200).json({ message: `${deletedUsersCount} usuarios eliminados correctamente.` });
           } else {
