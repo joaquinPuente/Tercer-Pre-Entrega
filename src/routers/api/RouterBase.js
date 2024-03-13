@@ -48,41 +48,6 @@ export default class RouterBase {
     });
   }
 
-  
-
-  handlePoliciesFuncional = (policies) => async (req, res, next) => {
-    try {
-
-        const role = req.session.user ? req.session.user.role : null ;
-
-        if (policies.includes('PUBLIC') && req.path !== '/addToCart') {
-            return next();
-        }
-
-        if (role === 'usuario' && req.path === '/addToCart' && req.method === 'POST') {
-            return next();
-        }
-
-        if ((role === 'ADMIN' || role === 'premium') && (
-            req.path.startsWith('/createProduct') ||
-            req.path.startsWith('/deleteProduct') ||
-            req.path.startsWith('/updateProduct')
-        )) {
-            return next(); 
-        } else if (role === 'ADMIN' || role === 'premium') {
-            if (req.path !== '/api/addToCart') {
-                return next();
-            } else {
-                return res.status(401).json({ message: 'Unauthorized from RouterBase' });
-            }
-        } else {
-            return res.status(401).json({ message: 'Unauthorized from RouterBase 2' });
-        }
-    } catch (error) {
-        console.error('An error occurred:', error.message);
-        return res.status(500).json({ message: 'Internal Server Error' });
-    }
-  };
 
   handlePolicies = (policies) => async (req, res, next) => {
     try {

@@ -97,8 +97,6 @@ export default class TicketController {
             
             const service = new PaymentService();
             let result = await service.createPaymentIntent(paymentIntentInfo);
-    
-            console.log(result);
             res.json('Pago aceptado');
             
         } catch (error) {
