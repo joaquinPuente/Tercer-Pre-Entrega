@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 const generateUniqueCode = () => {
-  const length = 8; // Longitud del código
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // Caracteres válidos
+  const length = 8; 
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; 
 
   let code = '';
   for (let i = 0; i < length; i++) {

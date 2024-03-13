@@ -29,13 +29,21 @@ export default class TicketController {
             if (tickets.length > 0) {
                 const ticket = tickets[0];
                 const emailContent = `
-                    <div>
-                        <h1>Detalles del ticket de compra</h1>
-                        <p><strong>Código:</strong> ${ticket.code}</p>
-                        <p><strong>Fecha de compra:</strong> ${ticket.purchase_datetime}</p>
-                        <p><strong>Monto:</strong> ${ticket.amount}</p>
-                    </div>
-                `;
+                <div>
+                    <h1>Detalles del ticket de compra</h1>
+                    <p><strong>Código:</strong> ${ticket.code}</p>
+                    <p><strong>Fecha de compra:</strong> ${ticket.purchase_datetime}</p>
+                    <p><strong>Monto:</strong> ${ticket.amount}</p>
+                    <h2>Productos Agregados:</h2>
+                    <ul>
+                        ${ticket.productsAdded.map(product => `<li>${product.title}: $${product.price}</li>`).join('')}
+                    </ul>
+                    <h2>Productos No Agregados:</h2>
+                    <ul>
+                        ${ticket.productsNotAdded.map(product => `<li>${product.title}: $${product.price}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
                 await EmailService.sendEmail(
                     email,
                     'Detalles de tu compra',
