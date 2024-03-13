@@ -2,13 +2,12 @@ import express from "express";
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import passport from 'passport'
+import cors from 'cors'
+
 import homeRouter from './routers/api/home.router.js';
 import chatRouter from './routers/api/chat.router.js';
 
-import usuarioRouter from './routers/api/usuario.router.js'
-
 import indexRouter from './routers/api/index.router.js';
-import sessionRouter from './routers/api/sessions.router.js'
 import mockingProduct from './routers/api/mockingProduct.router.js'
 
 import ProductBaseController from "./routers/api/productBaseController.router.js";
@@ -47,6 +46,7 @@ app.use(ExpressSession({
   })
 )
 
+app.use(cors())
 app.use(addLogger)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -75,7 +75,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
 app.use('/', homeRouter, indexRouter, sessionBaseController.getRouter(), mockingProduct );
 app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter(), ticketBaseController.getRouter() ,chatRouter);
-app.use('/test', sessionBaseController.getRouter() )
 
 app.use(errorHandler);
 

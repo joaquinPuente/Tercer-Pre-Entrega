@@ -18,11 +18,11 @@ export default class SessionRouter extends RouterBase {
 
   init() {
 
-    this.get('/users-information', ['PUBLIC'], UsuarioController.getAllUsersInfo );
-    this.get('/user/premium/:id', ['PUBLIC'], UsuarioController.updateToPremiumRedirect );
-    this.get('/user/delete/:id', ['PUBLIC'], UsuarioController.deleteUserById )
+    this.get('/users-information', ['ADMIN'], UsuarioController.getAllUsersInfo );
+    this.get('/user/premium/:id', ['ADMIN'], UsuarioController.updateToPremiumRedirect );
+    this.get('/user/delete/:id', ['ADMIN'], UsuarioController.deleteUserById )
     this.post('/users/:uid/documents/:typeFile', ['PUBLIC'], requireAuth, uploader.single('file'), UsuarioController.uploadDocument);
-    this.delete('/users/delete-users-inactives', ['PUBLIC'], UsuarioController.deleteUsersInactives);
+    this.delete('/users/delete-users-inactives', ['ADMIN'], UsuarioController.deleteUsersInactives);
 
     this.get('/api/session/current', ['PUBLIC'], requireAuth, UsuarioController.getCurrentSession);
 

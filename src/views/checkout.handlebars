@@ -2,11 +2,13 @@
     <form id="payment-form">
         <h1>Pasarela de pago</h1>
         <div id="card-element"><!-- Elemento de Stripe --></div>
+        <br>
         <button id="submit">
             <span id="button-text">Pagar</span>
             <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
         </button>
         <div id="card-errors" role="alert"></div>
+        <p>La informacion del ticket sera enviado al mail registrado</p>
     </form>
 </div>
 <script src="https://js.stripe.com/v3/"></script>
@@ -48,14 +50,11 @@
             })
             .then(response => {
                 if (response.ok) {
-                    return response.json();
+                    // Redirigir al usuario a la ruta /api/sendMail
+                    window.location.href = '/api/sendEmail';
                 } else {
                     throw new Error('Error en el pago');
                 }
-            })
-            .then(data => {
-                console.log('paso el pago',data);
-                // Manejar respuesta exitosa
             })
             .catch(error => {
                 console.error('no paso el pago',error);
@@ -68,3 +67,4 @@
         }
     });
 </script>
+

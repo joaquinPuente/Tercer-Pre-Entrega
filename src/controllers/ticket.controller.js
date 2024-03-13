@@ -65,7 +65,6 @@ export default class TicketController {
     static async getCheckout (req,res) {
         try {
             const stripe_key_public = config.stripe_key_public;
-            console.log('stripe key public: ',stripe_key_public);
             res.render('checkout', { stripe_key_public });
         } catch (error) {
             res.status(404).json({ error: 'No se pudo ingresar a la vista checkout'} );
@@ -73,35 +72,41 @@ export default class TicketController {
     }
 
     static async payment(req, res) {
-        const { card_number, exp_month, exp_year, cvc } = req.body;
+        const { token } = req.body;
         try {
-            const stripe_key_secret = config.stripe_key_secret;
-            const paymentService = new PaymentService(stripe_key_secret);
-            const paymentIntent = await paymentService.createPaymentIntent({
-                amount: 100,
+            const tickets = await TicketService.findByPurchaserEmail(req.session.user.email);
+            if (!tickets || tickets.length === 0) {
+                return res.status(404).json({ error: 'No se encontró el ticket para este usuario' });
+            }
+            const ticket = tickets[0]; 
+            const amount = ticket.amount *100;
+            const paymentIntentInfo = {
+                amount: amount,
                 currency: 'usd',
                 payment_method_types: ['card'],
                 payment_method_data: {
                     type: 'card',
                     card: {
-                        number: card_number,
-                        exp_month: exp_month,
-                        exp_year: exp_year,
-                        cvc: cvc
+                        token: token
                     }
+                },
+                metadata: {
+                    user_email: req.session.user.email,
                 }
-            });
+            };
+            
+            const service = new PaymentService();
+            let result = await service.createPaymentIntent(paymentIntentInfo);
     
-            // Aquí manejas la respuesta del servidor de Stripe
-            console.log(paymentIntent);
-            // Puedes enviar la respuesta al cliente si es necesario
-            res.json(paymentIntent);
+            console.log(result);
+            res.json('Pago aceptado');
             
         } catch (error) {
             console.error(error);
             res.status(500).send('Error en el pago');
         }
     };
+    
     
     
 }
