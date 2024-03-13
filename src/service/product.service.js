@@ -1,4 +1,4 @@
-import ProductDao from '../dao/factory.js';
+import { ProductDao }  from '../dao/factory.js';
 
 export default class ProductService {
   static async getAllProducts(criteria, options) {
