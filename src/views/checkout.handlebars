@@ -1,14 +1,70 @@
 <div class="container">
-    <form action="/api/charge" method="post">
+    <form id="payment-form">
         <h1>Pasarela de pago</h1>
-        <label for="card_number">Número de tarjeta:</label>
-        <input type="text" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" required><br>
-        <label for="exp_month">Mes de expiración:</label>
-        <input type="text" id="exp_month" name="exp_month" placeholder="MM" required><br>
-        <label for="exp_year">Año de expiración:</label>
-        <input type="text" id="exp_year" name="exp_year" placeholder="YY" required><br>
-        <label for="cvc">CVC:</label>
-        <input type="text" id="cvc" name="cvc" placeholder="CVC" required><br>
-        <input type="submit" value="Pagar">
+        <div id="card-element"><!-- Elemento de Stripe --></div>
+        <button id="submit">
+            <span id="button-text">Pagar</span>
+            <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+        </button>
+        <div id="card-errors" role="alert"></div>
     </form>
 </div>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{stripe_key_public}}');
+    var elements = stripe.elements();
+    
+    // Configurar el elemento de tarjeta para omitir el campo del código postal
+    var cardElement = elements.create('card', {
+        hidePostalCode: true
+    });
+    
+    cardElement.mount('#card-element');
+    
+    var cardErrors = document.getElementById('card-errors');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        var submitButton = document.getElementById('submit');
+        var spinner = document.getElementById('spinner');
+        submitButton.disabled = true;
+        spinner.classList.remove('d-none');
+
+        var { token, error } = await stripe.createToken(cardElement);
+
+        if (error) {
+            cardErrors.textContent = error.message;
+            submitButton.disabled = false;
+            spinner.classList.add('d-none');
+        } else {
+            // Enviar el token al backend
+            fetch('/api/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: token.id })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error en el pago');
+                }
+            })
+            .then(data => {
+                console.log('paso el pago',data);
+                // Manejar respuesta exitosa
+            })
+            .catch(error => {
+                console.error('no paso el pago',error);
+                // Manejar errores de pago
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                spinner.classList.add('d-none');
+            });
+        }
+    });
+</script>

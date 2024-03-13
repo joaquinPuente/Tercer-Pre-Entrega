@@ -73,7 +73,6 @@ const swaggerOptions = {
 const specs = swaggerJsDoc(swaggerOptions)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
-//app.use('/', homeRouter, indexRouter, sessionRouter, mockingProduct );
 app.use('/', homeRouter, indexRouter, sessionBaseController.getRouter(), mockingProduct );
 app.use('/api', productBaseController.getRouter() , cartBaseController.getRouter(), ticketBaseController.getRouter() ,chatRouter);
 app.use('/test', sessionBaseController.getRouter() )

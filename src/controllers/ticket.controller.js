@@ -1,6 +1,7 @@
 import TicketService from "../service/ticket.service.js";
 import EmailService from '../service/mails.service.js'
-import stripe from 'stripe'
+import PaymentService from "../service/payment.service.js";
+import config from "../config.js";
 
 export default class TicketController {
     static async getTicketsByPurchaser(req, res) {
@@ -63,19 +64,21 @@ export default class TicketController {
 
     static async getCheckout (req,res) {
         try {
-            res.render('checkout')
+            const stripe_key_public = config.stripe_key_public;
+            console.log('stripe key public: ',stripe_key_public);
+            res.render('checkout', { stripe_key_public });
         } catch (error) {
             res.status(404).json({ error: 'No se pudo ingresar a la vista checkout'} );
         }
     }
 
-    static async payment (req, res) {
+    static async payment(req, res) {
         const { card_number, exp_month, exp_year, cvc } = req.body;
         try {
-
-            
-            const paymentIntent = await stripe.paymentIntents.create({
-                amount: 1000,
+            const stripe_key_secret = config.stripe_key_secret;
+            const paymentService = new PaymentService(stripe_key_secret);
+            const paymentIntent = await paymentService.createPaymentIntent({
+                amount: 100,
                 currency: 'usd',
                 payment_method_types: ['card'],
                 payment_method_data: {
@@ -88,11 +91,17 @@ export default class TicketController {
                     }
                 }
             });
-            res.send('Pago exitoso');
+    
+            // Aquí manejas la respuesta del servidor de Stripe
+            console.log(paymentIntent);
+            // Puedes enviar la respuesta al cliente si es necesario
+            res.json(paymentIntent);
+            
         } catch (error) {
             console.error(error);
             res.status(500).send('Error en el pago');
         }
     };
+    
     
 }
