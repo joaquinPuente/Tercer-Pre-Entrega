@@ -26,9 +26,11 @@ switch (config.persistence) {
     UserDao = MemoryUserDao.default;
     CartDao = MemoryCartDao.default;
     throw new Error('Persistencia no configurada');
-    
+
     break;
 
   default:
     throw new Error('Error al leer Factory_persistence');
 }
+
+export { ProductDao, UserDao, CartDao };
