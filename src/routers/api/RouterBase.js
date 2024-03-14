@@ -69,8 +69,8 @@ export default class RouterBase {
                   req.path.startsWith('/deleteProduct') ||
                   req.path.startsWith('/updateProduct') ||
                   req.path.startsWith('/users-information') ||
-                  req.path.startsWith('/user/premium/:id') ||
-                  req.path.startsWith('/user/delete/:id') ||
+                  req.path.startsWith('/user/premium/') ||
+                  req.path.startsWith('/user/delete/') ||
                   req.path.startsWith('/users/delete-users-inactives')
                   ) {
                       return next();
